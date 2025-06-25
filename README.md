@@ -98,4 +98,4 @@ Email：yjc1529425632@gmail.com
 
 ### License
 
-Selfstudy-server is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/LICENSE) for the full license text.
+studyroom-admin-web is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/LICENSE) for the full license text.
