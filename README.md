@@ -46,14 +46,27 @@ studyroom-admin-web
 └── vite.config.ts      // Vite Configuration
 ```
 
-### 4. Project Link
+### 4. Preview
+
+<table>
+<tr>
+<td>
+<img src="https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/picture/01.png">
+</td>
+<td>
+<img src="https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/picture/02.png">
+</td>
+</tr>
+</table>
+
+### 5. Project Link
 
 - **Server:** https://github.com/yang-jiacheng/selfstudy-server
 - **Background management:** https://github.com/yang-jiacheng/studyroom-admin-web
 - **Android:** https://github.com/yang-jiacheng/StudyRoom
 
 
-### 5. Demo Link
+### 6. Demo Link
 
 Admin Backend：http://115.29.185.30/selfStudyAdmin/login
 
@@ -65,7 +78,7 @@ Demo account: 17508660924/123456
 
 Due to the restriction of Aliyun SMS service, individual developers cannot apply for SMS signature, so please use the password to log in.
 
-### 6. Project Setup
+### 7. Project Setup
 
 ```sh
 ## Install dependencies
