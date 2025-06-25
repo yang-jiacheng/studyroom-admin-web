@@ -78,6 +78,10 @@ const login = async () => {
   }
 };
 
+const goGithub = () => {
+  window.open('https://github.com/yang-jiacheng', '_blank');
+};
+
 onMounted(async () => {
   await getKaptchaCode();
 });
@@ -86,7 +90,7 @@ onMounted(async () => {
 <template>
   <div class="container">
     <div class="login-container">
-      <div class="login-title ">后台管理系统</div>
+      <div class="login-title ">云自习后台</div>
 
       <div class="form-group">
         <img class="icon-img" style="height: 17px;" src="https://selfstudy-server.oss-cn-hangzhou.aliyuncs.com/static/images/user.png" />
@@ -109,7 +113,7 @@ onMounted(async () => {
       <button class="login-btn" id="submit" @click="login()">立即登录</button>
 
       <div class="footer">
-        <div>© 2021<span >{{ nowYear() }}</span> By <span class="copyright ">jiacheng yang.</span> All right reserved</div>
+        <div>© 2021<span >{{ nowYear() }}</span> By <span class="copyright " @click="goGithub">jiacheng yang.</span> All right reserved</div>
       </div>
     </div>
   </div>

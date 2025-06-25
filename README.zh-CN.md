@@ -46,14 +46,27 @@ studyroom-admin-web
 └── vite.config.ts      // Vite 构建工具配置
 ```
 
-### 4. 项目地址
+### 4. 预览
+
+<table>
+<tr>
+<td>
+<img src="https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/picture/01.png">
+</td>
+<td>
+<img src="https://github.com/yang-jiacheng/studyroom-admin-web/blob/master/picture/02.png">
+</td>
+</tr>
+</table>
+
+### 5. 项目地址
 
 - **服务端:** https://github.com/yang-jiacheng/selfstudy-server
 - **后台管理系统:** https://github.com/yang-jiacheng/studyroom-admin-web
 - **Android 客户端:** https://github.com/yang-jiacheng/StudyRoom
 
 
-### 5. 演示地址
+### 6. 演示地址
 
 后台管理系统：http://115.29.185.30/selfStudyAdmin/login
 
@@ -65,7 +78,7 @@ Android 客户端：https://selfstudy-server.oss-cn-hangzhou.aliyuncs.com/androi
 
 由于阿里云SMS短信服务限制，个人开发者无法申请短信签名，所以请使用密码登录
 
-### 6. 项目设置
+### 7. 项目设置
 
 ```sh
 ## 安装依赖

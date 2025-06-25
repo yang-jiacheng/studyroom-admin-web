@@ -48,7 +48,7 @@ studyroom-admin-web
 
 ### 4. Project Link
 
-- **Server: **https://github.com/yang-jiacheng/selfstudy-server
+- **Server:** https://github.com/yang-jiacheng/selfstudy-server
 - **Background management:** https://github.com/yang-jiacheng/studyroom-admin-web
 - **Android:** https://github.com/yang-jiacheng/StudyRoom
 
