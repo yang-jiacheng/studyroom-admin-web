@@ -1,0 +1,258 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.cm-body-BackCol{
+  background-color: #f3f6fd !important;
+}
+.wid-95{
+  width: 95%;
+}
+.wid-200{
+  width: 200px !important;
+}
+.wid-220{
+  width: 220px !important;
+}
+.p-2{
+  padding: 0.5rem;
+}
+.mb-10{
+  margin-bottom: 10px;
+}
+.mt-5{
+  margin-top: 5px;
+}
+.mt-10{
+  margin-top: 10px;
+}
+.overflow-hidden{
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.disabled-background{
+  background-color: #eeeeee !important;
+}
+.disabled-color{
+  color: #eeeeee !important;
+}
+
+/*  --自定义颜色，背景色--  */
+.hover-light{
+  background: #e8f1ff;
+}
+
+/* 浅色系 */
+.lightGreen-background{
+  background-color: #33cabb !important;
+}
+.lightGreen-color{
+  color: #33cabb !important;
+}
+.lightPurple-background{
+  background-color: #818fee !important;
+}
+.lightPurple-color{
+  color: #818fee !important;
+}
+
+/* 深色系 */
+.deepBlue-background{
+  background-color: #0095ff !important;
+}
+.deepBlue-color{
+  color: #0095ff !important;
+}
+.deepRed-background{
+  background-color: #e91e63 !important;
+}
+.deepRed-color{
+  color: #e91e63 !important;
+}
+
+/* 亮色系 */
+.brightPink-background{
+  background-color: #f96197 !important;
+}
+.brightPink-color{
+  color: #f96197 !important;
+}
+.brightPurple-background{
+  background-color: #926dde !important;
+}
+.brightPurple-color{
+  color: #926dde !important;
+}
+.brightBlue-background{
+  background-color: #1890FF !important;
+}
+.brightBlue-color{
+  color: #1890FF !important;
+}
+.brightRed-background{
+  background-color: #f96868 !important;
+}
+.brightRed-color{
+  color: #f96868 !important;
+}
+.brightGreen-background{
+  background-color: #15c377 !important;
+}
+.brightGreen-color{
+  color: #15c377 !important;
+}
+.brightOrange-background{
+  background-color: #faa64b !important;
+}
+.brightOrange-color{
+  color: #faa64b !important;
+}
+.brightCyan-background{
+  background-color: #57c7d4 !important;
+}
+.brightCyan-color{
+  color: #57c7d4 !important;
+}
+.brightBrown-background{
+  background-color: #8d6658 !important;
+}
+.brightBrown-color{
+  color: #8d6658 !important;
+}
+.brightYellow-background{
+  background-color: #fcc525 !important;
+}
+.brightYellow-color{
+  color: #fcc525 !important;
+}
+.brightSecondary-background{
+  background-color: #bdc1c4 !important;
+}
+.brightSecondary-color{
+  color: #bdc1c4 !important;
+}
+.brightBlack-background{
+  background-color: #465161 !important;
+}
+.brightBlack-color{
+  color: #465161 !important;
+}
+.down-a{
+  color: #0c7fd1 !important;
+  text-decoration: none;
+  border-bottom: 1px solid #0c7fd1 !important;
+}
+.operation-a{
+  display: inline-block;
+  margin: 0 5px;
+  font-size: 13px;
+  transition: transform 0.3s, color 0.3s;
+}
+.operation-a:hover{
+  color:#666666 !important;
+  cursor: pointer;
+  transform: translateY(-3px);
+}
+.page {
+  height: 100%;
+}
+.dialog-header{
+  font-size: 15px;
+  font-weight: 600
+}
+.dialog-body{
+  margin: 20px 0
+}
+.text-deprecated{
+  text-decoration: line-through;
+}
+
+/* 图片样式 */
+.advert-upload-img{
+  width: 150px;
+  height: 150px;
+  background-color: #f5f5f5;
+}
+.advert-img-error{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* element-ui样式 */
+.el-form-item__label{
+  font-weight: 700 !important;
+}
+
+/* el-card样式 */
+.el-card__header {
+  padding: 14px 15px 7px !important;
+  min-height: 40px;
+}
+.el-card__body {
+  padding: 15px 20px 20px !important;
+}
+
+.btn-group-flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* el-table样式 */
+.el-table .el-table__header-wrapper th, .el-table .el-table__fixed-header-wrapper th{
+  overflow-wrap: break-word;
+  background-color: #f8f8f9 !important;
+  color: #515a6e;
+  height: 40px !important;
+  font-size: 13px;
+}
+.el-table .cell{
+  color: #5E5A6E ;
+  overflow-wrap: normal !important;
+}
+.el-table td.el-table__cell div{
+  color: #606266 ;
+}
+/* pagination样式 */
+.el-pagination {
+  padding: 36px 0;
+  display: flex;
+  justify-content: end;
+}
+
+
+/* tree border */
+.tree-border {
+  margin-top: 5px;
+  border: 1px solid #e5e6e7;
+  background: #ffffff none;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* 设置滚动条宽度 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* 设置滚动条轨道背景（透明或你喜欢的颜色） */
+::-webkit-scrollbar-track {
+  background-color: #eeeeee;
+  border-radius: 4px;
+}
+
+/* 设置滚动条滑块为渐变色 */
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+/* 鼠标悬停时滑块样式 */
+::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(120deg, #91bdfd 0%, #b1dffd 100%);
+}
+
