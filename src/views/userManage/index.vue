@@ -439,7 +439,7 @@ onMounted(() => {
                     <span>上传</span>
                   </el-button>
                 </div>
-                <div class="con-img-tip">图片大小不能超过5M。</div>
+                <div class="con-img-tip">图片大小不能超过10M。</div>
 
                 <el-image
                   class="advert-upload-img"
@@ -474,7 +474,7 @@ onMounted(() => {
                   <span>上传</span>
                 </el-button>
               </div>
-              <div class="con-img-tip">图片大小不能超过5M。</div>
+              <div class="con-img-tip">图片大小不能超过10M。</div>
               <el-image
                 class="advert-upload-img"
                 :src="formEditUser.coverPath || ''"
