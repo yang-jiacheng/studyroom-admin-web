@@ -194,13 +194,9 @@ const rulesEditRole = {
     {
       validator: (rule: any, value: string, callback: (error?: Error) => void) => {
         const phoneReg = /^1[3-9]\d{9}$/;
-        if (!value) {
-          // 不填就通过（非必填）
-          callback();
-        } else if (!phoneReg.test(value)) {
+        if (value && !phoneReg.test(value))  {
           callback(new Error('请输入合法的手机号'));
         } else {
-          // 填了并且合法
           callback();
         }
       },
@@ -390,8 +386,8 @@ onMounted(() => {
             <el-col :span="12">
               <el-form-item  label="状态" prop="status">
                 <el-radio-group v-model="formEditRole.status">
-                  <el-radio :label="1" >正常</el-radio>
-                  <el-radio :label="2" >禁用</el-radio>
+                  <el-radio :value="1" >正常</el-radio>
+                  <el-radio :value="2" >禁用</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>

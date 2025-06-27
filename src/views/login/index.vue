@@ -67,12 +67,6 @@ const login = async () => {
       });
       setToken(res.result);
       await router.push({ path: '/main' });
-    }else {
-      ElMessage({
-        type: 'error',
-        message: res.msg,
-        duration: 2000
-      });
     }
 
   }

@@ -66,6 +66,7 @@ request.interceptors.response.use((response) => {
       duration: 2500
     });
     return Promise.reject(msg);
+    // return Promise.resolve(response.data);
   }
 
 }, (error) => {
