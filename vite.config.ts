@@ -32,7 +32,7 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
       }
 
     },
-    plugins: createPlugins(env, command === 'build'),
+    plugins: createPlugins(env,command === 'build'),
     css: {
       preprocessorOptions: {
         scss: {

@@ -3,8 +3,10 @@ import { getUserPageList,saveUser,removeUserByIds } from "@/api/user/index.ts";
 import type { User, UserEditDTO } from "@/api/user/type.ts";
 import { downloadFile } from "@/utils/download.ts";
 import { encryptSha256 } from "@/utils/encrypt.ts";
-import { uploadFile,checkFile } from "@/utils/ossUtil.ts";
 import { showProgress, updateProgress, closeProgress } from "@/utils/progressOverlay.ts";
+import useOss from "@/hooks/useOSS.ts";
+
+const { checkFile,uploadFile } = useOss();
 
 /**
  * 查询表单
@@ -177,9 +179,9 @@ const submitDialog = () => {
       if (profilePath && profilePath.indexOf('/upload') !== -1){
         profilePath = profilePath.substring(profilePath.indexOf('/upload'));
       }
-      const coverPath = formEditUser.coverPath;
+      let coverPath = formEditUser.coverPath;
       if (coverPath && coverPath.indexOf('/upload') !== -1){
-        profilePath = coverPath.substring(coverPath.indexOf('/upload'));
+        coverPath = coverPath.substring(coverPath.indexOf('/upload'));
       }
       const payload: UserEditDTO = {
         id: formEditUser.id,
@@ -334,7 +336,7 @@ onMounted(() => {
 
   <el-card shadow="hover">
     <template #header>
-      <el-row :gutter="10">
+      <el-row :gutter="10" style="display: flex; justify-content: space-between;">
         <div>
           <el-button type="danger" plain @click="deleteUserBatch">
             <el-icon ><i-ep-delete /></el-icon>
@@ -343,6 +345,16 @@ onMounted(() => {
           <el-button type="primary" plain @click="addUser">
             <el-icon ><i-ep-plus /></el-icon>
             <span>新增</span>
+          </el-button>
+        </div>
+        <div>
+          <el-button type="primary" plain @click="addUser">
+            <el-icon ><i-ep-plus /></el-icon>
+            <span>导入</span>
+          </el-button>
+          <el-button type="primary" plain @click="addUser">
+            <el-icon ><i-ep-plus /></el-icon>
+            <span>导出</span>
           </el-button>
         </div>
       </el-row>
@@ -361,7 +373,12 @@ onMounted(() => {
       <el-table-column label="手机号"  prop="phone" />
       <el-table-column label="性别"  prop="gender" />
       <el-table-column label="注册时间" prop="createTime" />
-      <el-table-column label="注册类型"  prop="registType" />
+      <el-table-column label="注册类型"  prop="registType" >
+        <template #default="scope">
+          <span v-if="scope.row.registType === 1">用户注册</span>
+          <span v-else-if="scope.row.registType === 2">后台添加</span>
+        </template>
+      </el-table-column>
       <el-table-column label="地址"  prop="address" />
       <el-table-column  label="操作" width="200">
         <template #default="scope">

@@ -59,14 +59,13 @@ request.interceptors.response.use((response) => {
     // 跳转登录页面
     location.href = import.meta.env.VITE_APP_CONTEXT_PATH + '#/login';
     return Promise.reject(msg);
-  }else {
+  } else {
     ElMessage({
       type: 'error',
       message: msg,
       duration: 2500
     });
     return Promise.reject(msg);
-    // return Promise.resolve(response.data);
   }
 
 }, (error) => {

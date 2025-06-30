@@ -10,8 +10,7 @@
     "src/**/*.tsx",                  // 支持使用 JSX/TSX（适用于 Vue 中的 <script lang="tsx">）
     "src/**/*.vue",                 // 所有 Vue 单文件组件
     "src/types/auto-imports.d.ts",   // 自动引入类型文件，例如 unplugin-auto-import 生成的声明
-    "src/types/element.d.ts",
-    "src/types/ali-oss.d.ts"
+    "src/types/element.d.ts"
   ],
 
   // 排除不参与编译的文件和目录

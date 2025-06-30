@@ -24,6 +24,11 @@ export const constantRoute = [
     name: 'login'
   },
   {
+    path: '/403',
+    component: () => import('@/views/error/403.vue'),
+    name: '403'
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
     name: '404'
