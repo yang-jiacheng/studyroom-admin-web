@@ -145,7 +145,7 @@ const hotCourses = ref([
   { rank: 3, 'name': 'PostgreSQL 高级应用', views: 631 },
   { rank: 4, 'name': 'Vue3.0 全面解析', views: 400 },
   { rank: 5, 'name': 'React 进阶实战', views: 350 },
-  { rank: 5, 'name': '安卓开发进阶-Kotlin语言精通', views: 99 }
+  { rank: 6, 'name': '安卓开发进阶-Kotlin语言精通', views: 99 }
 ]);
 
 // --- 热门销售数据 ---

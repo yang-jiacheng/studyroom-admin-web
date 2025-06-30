@@ -1,5 +1,5 @@
 import { createVNode, render } from 'vue';
-import ProgressOverlay from '@/components/ProgressOverlay.vue';
+import ProgressOverlay from '@/components/progress/ProgressOverlay.vue';
 
 let container: HTMLElement | null = null;
 let vnode: any = null;

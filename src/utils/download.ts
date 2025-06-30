@@ -53,6 +53,7 @@ export async function downloadFile (
     document.body.removeChild(link);
   } catch (err: any) {
     console.error(err);
+    ElMessage.error('下载失败！');
   }finally {
     closeLoading();
   }

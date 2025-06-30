@@ -11,6 +11,7 @@ export default function createCompression (env: Record<string, string>): PluginO
     .map((s) => s.trim().toLowerCase());
 
   const plugins: PluginOption[] = [];
+  const excludeFilesRegex = /bundle-analyzer\.html$/; // 匹配以 bundle-analyzer.html 结尾的文件
 
   if (compressList.includes('gzip')) {
     plugins.push(
@@ -19,7 +20,11 @@ export default function createCompression (env: Record<string, string>): PluginO
         threshold: 51200,
         algorithm: 'gzip',
         ext: '.gz',
-        deleteOriginFile: false
+        deleteOriginFile: false,
+        filter: (file: string) => {
+          // 如果文件路径与排除的正则表达式匹配，则返回 false (不压缩)
+          return !excludeFilesRegex.test(file);
+        }
       })
     );
   }

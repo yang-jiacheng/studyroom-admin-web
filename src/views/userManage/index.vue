@@ -5,6 +5,8 @@ import { downloadFile } from "@/utils/download.ts";
 import { encryptSha256 } from "@/utils/encrypt.ts";
 import { showProgress, updateProgress, closeProgress } from "@/utils/progressOverlay.ts";
 import useOss from "@/hooks/useOSS.ts";
+import { globalHeaders } from "@/utils/request.ts";
+import { closeLoading, showLoading } from "@/utils/loading.ts";
 
 const { checkFile,uploadFile } = useOss();
 
@@ -132,8 +134,76 @@ const deleteUser = (row: User) => {
     });
 };
 
+const importUser = () => {
+  dialogExport.visible = true;
+};
+//导出用户
+const exportUser = () => {
+  downloadFile('/userManage/exportUserInExcel', queryParams.value,"POST");
+};
+
 /**
- * 弹窗
+ * 导入弹窗
+ */
+const uploadRef = ref<ElUploadInstance>();
+const dialogExport = reactive<DialogOption>({
+  visible: false,
+  title: '导入用户',
+  templateUrl: '/userManage/downloadMaterial',
+  action: `${import.meta.env.VITE_SERVE}/userManage/importUsersInExcel`
+});
+
+const cancelExportDialog = () => {
+  dialogExport.visible = false;
+  uploadRef.value?.clearFiles();
+};
+
+const handleSuccess = (response: any, file: UploadFile) => {
+  uploadRef.value?.handleRemove(file);
+  dialogExport.visible = false;
+  if (response.code === 0) {
+    ElMessage.success('导入成功！');
+  }else {
+    ElMessage.error(response.msg);
+  }
+  resetQuery();
+  closeLoading();
+};
+
+const beforeUpload = (file: UploadFile) => {
+  // 允许的 Excel 文件类型
+  const allowedTypes = [
+    'xls',
+    'xlsx'
+  ];
+  const fileType = file.name.substring(file.name.lastIndexOf('.') + 1);
+  const isExcel = allowedTypes.includes(fileType);
+  if (!isExcel) {
+    ElMessage.warning('请上传EXCEL文件');
+    return false; // 阻止上传
+  }
+  const isSizeValid = file.size / 1024 / 1024 < 5; // 判断文件大小是否小于 5MB
+  if (!isSizeValid) {
+    ElMessage.warning('文件大小不能超过 5MB');
+    return false; // 阻止上传
+  }
+  showLoading('上传中...');
+  return true; // 允许上传
+};
+
+const handleError = (response: any, file: UploadFile) => {
+  uploadRef.value?.handleRemove(file);
+  dialogExport.visible = false;
+  closeLoading();
+  ElMessage.error('导入失败');
+};
+
+const submitExportDialog = () => {
+  uploadRef.value?.submit();
+};
+
+/**
+ * 编辑用户弹窗
  */
 const dialog = reactive<DialogOption>({
   visible: false,
@@ -348,12 +418,12 @@ onMounted(() => {
           </el-button>
         </div>
         <div>
-          <el-button type="primary" plain @click="addUser">
-            <el-icon ><i-ep-plus /></el-icon>
+          <el-button type="primary" plain @click="importUser">
+            <el-icon ><i-ep-upload /></el-icon>
             <span>导入</span>
           </el-button>
-          <el-button type="primary" plain @click="addUser">
-            <el-icon ><i-ep-plus /></el-icon>
+          <el-button type="primary" plain @click="exportUser">
+            <el-icon ><i-ep-download /></el-icon>
             <span>导出</span>
           </el-button>
         </div>
@@ -516,6 +586,43 @@ onMounted(() => {
       <div class="dialog-footer">
         <el-button type="primary" @click="submitDialog"> 确定 </el-button>
         <el-button @click="cancelDialog">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog :close-on-click-modal="false" :destroy-on-close="true"   v-model="dialogExport.visible" :before-close="cancelExportDialog"  width="500">
+    <template #header>
+      <span style="font-size: 15px">导入学员</span>
+    </template>
+    <div style="margin: 20px 0;">
+      <el-upload
+        ref="uploadRef"
+        :limit="1"
+        accept=".xlsx,.xls"
+        :auto-upload="false"
+        :action="dialogExport.action"
+        :headers="globalHeaders()"
+        :before-upload="beforeUpload"
+        :on-success="handleSuccess"
+        :on-error="handleError"
+        drag
+      >
+        <el-icon class="el-icon--upload">
+          <i-ep-upload-filled />
+        </el-icon>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <template #tip>
+          <div class="text-center el-upload__tip">
+            <span>仅允许导入xls、xlsx格式文件。</span>
+            <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="downloadFile(dialogExport.templateUrl!)">下载模板</el-link>
+          </div>
+        </template>
+      </el-upload>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="submitExportDialog"> 确定 </el-button>
+        <el-button @click="cancelExportDialog">取消</el-button>
       </div>
     </template>
   </el-dialog>

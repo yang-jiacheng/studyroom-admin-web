@@ -4,7 +4,12 @@
 
 <template>
 <div>
-  <h1>Classify Manage</h1>
+  <el-card shadow="hover">
+    hello
+  </el-card>
+  <el-card shadow="hover">
+    world
+  </el-card>
 </div>
 </template>
 

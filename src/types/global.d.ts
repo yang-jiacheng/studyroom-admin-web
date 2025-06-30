@@ -42,6 +42,14 @@ declare global {
      * 是否显示
      */
     visible: boolean;
+    /**
+     * 模板文件路径
+     */
+    templateUrl?: string;
+    /**
+     * 请求地址
+     */
+    action?: string;
   }
 
   /**

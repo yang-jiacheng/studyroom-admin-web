@@ -37,6 +37,9 @@
 .disabled-color{
   color: #eeeeee !important;
 }
+.text-center{
+  text-align: center;
+}
 
 /*  --自定义颜色，背景色--  */
 .hover-light{
