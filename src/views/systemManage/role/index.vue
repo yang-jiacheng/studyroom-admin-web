@@ -270,8 +270,8 @@ onMounted(() => {
       <el-table-column label="创建时间" prop="createTime" width="200"/>
       <el-table-column  label="操作" width="200">
         <template #default="scope">
-          <span class="operation-a brightBlue-color" @click="updateRole(scope.row)">修改</span>
-          <span class="operation-a deepRed-color" @click="deleteRole(scope.row)">删除</span>
+          <span class="operation-a blue-color" @click="updateRole(scope.row)">修改</span>
+          <span class="operation-a red-color" @click="deleteRole(scope.row)">删除</span>
         </template>
       </el-table-column>
     </el-table>

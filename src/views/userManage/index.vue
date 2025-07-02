@@ -385,8 +385,8 @@ onMounted(() => {
       <el-table-column label="地址"  prop="address" />
       <el-table-column  label="操作" width="200">
         <template #default="scope">
-          <span class="operation-a brightBlue-color" @click="updateUser(scope.row)">修改</span>
-          <span class="operation-a deepRed-color" @click="deleteUser(scope.row)">删除</span>
+          <span class="operation-a blue-color" @click="updateUser(scope.row)">修改</span>
+          <span class="operation-a red-color" @click="deleteUser(scope.row)">删除</span>
         </template>
       </el-table-column>
     </el-table>

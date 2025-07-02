@@ -46,99 +46,67 @@
   background: #e8f1ff;
 }
 
-/* 浅色系 */
-.lightGreen-background{
-  background-color: #33cabb !important;
+/* 颜色 */
+.blue-background{
+  background-color: #0095ff !important;
 }
-.lightGreen-color{
-  color: #33cabb !important;
+.blue-color{
+  color: #0095ff !important;
 }
-.lightPurple-background{
+.purple-background{
   background-color: #818fee !important;
 }
-.lightPurple-color{
+.purple-color{
   color: #818fee !important;
 }
 
-/* 深色系 */
-.deepBlue-background{
-  background-color: #0095ff !important;
-}
-.deepBlue-color{
-  color: #0095ff !important;
-}
-.deepRed-background{
+.red-background{
   background-color: #e91e63 !important;
 }
-.deepRed-color{
+.red-color{
   color: #e91e63 !important;
 }
 
-/* 亮色系 */
-.brightPink-background{
-  background-color: #f96197 !important;
-}
-.brightPink-color{
-  color: #f96197 !important;
-}
-.brightPurple-background{
-  background-color: #926dde !important;
-}
-.brightPurple-color{
-  color: #926dde !important;
-}
-.brightBlue-background{
-  background-color: #1890FF !important;
-}
-.brightBlue-color{
-  color: #1890FF !important;
-}
-.brightRed-background{
-  background-color: #f96868 !important;
-}
-.brightRed-color{
-  color: #f96868 !important;
-}
-.brightGreen-background{
+.green-background{
   background-color: #15c377 !important;
 }
-.brightGreen-color{
+.green-color{
   color: #15c377 !important;
 }
-.brightOrange-background{
+.orange-background{
   background-color: #faa64b !important;
 }
-.brightOrange-color{
+.orange-color{
   color: #faa64b !important;
 }
-.brightCyan-background{
+.cyan-background{
   background-color: #57c7d4 !important;
 }
-.brightCyan-color{
+.cyan-color{
   color: #57c7d4 !important;
 }
-.brightBrown-background{
+.brown-background{
   background-color: #8d6658 !important;
 }
-.brightBrown-color{
+.brown-color{
   color: #8d6658 !important;
 }
-.brightYellow-background{
+.yellow-background{
   background-color: #fcc525 !important;
 }
-.brightYellow-color{
+.yellow-color{
   color: #fcc525 !important;
 }
-.brightSecondary-background{
+.secondary-background{
   background-color: #bdc1c4 !important;
 }
-.brightSecondary-color{
+.secondary-color{
   color: #bdc1c4 !important;
 }
-.brightBlack-background{
+.black-background{
   background-color: #465161 !important;
 }
-.brightBlack-color{
+.black-color{
   color: #465161 !important;
 }
 .down-a{
