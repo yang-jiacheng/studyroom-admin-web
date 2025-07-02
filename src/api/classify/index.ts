@@ -1,6 +1,6 @@
 import request from "@/utils/request.ts";
 import type { R } from "@/api/R.ts";
-import type { CatalogTreeVO, Classify, ClassifyEditDTO, Catalog, CatalogEditDTO } from "@/api/classify/type.ts";
+import type { CatalogTreeVO, Classify, Catalog } from "@/api/classify/type.ts";
 
 /**
  * 获取图书馆树
@@ -25,7 +25,7 @@ export const getClassifyById = (id: number): Promise<R<Classify>> => {
 /**
  * 修改图书馆
  */
-export const updateClassify = (data: ClassifyEditDTO): Promise<R<any>> => {
+export const updateClassify = (data: Classify): Promise<R<any>> => {
   return request({
     url: `/classifyManage/updateClassify`,
     method: 'post',
@@ -66,9 +66,9 @@ export const getCatalogById = (id: number): Promise<R<Catalog>> => {
 /**
  * 编辑节点
  */
-export const saveCatalog = (data: CatalogEditDTO): Promise<R<any>> => {
+export const saveCatalog = (data: Catalog): Promise<R<any>> => {
   return request({
-    url: `/classifyManage/getClassifyTree`,
+    url: `/classifyManage/saveCatalog`,
     method: 'post',
     data
   });

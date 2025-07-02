@@ -3,12 +3,9 @@ import { getUserPageList,saveUser,removeUserByIds } from "@/api/user/index.ts";
 import type { User, UserEditDTO } from "@/api/user/type.ts";
 import { downloadFile } from "@/utils/download.ts";
 import { encryptSha256 } from "@/utils/encrypt.ts";
-import { showProgress, updateProgress, closeProgress } from "@/utils/progressOverlay.ts";
-import useOss from "@/hooks/useOSS.ts";
+import { updateProgress } from "@/utils/progressOverlay.ts";
 import { globalHeaders } from "@/utils/request.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
-
-const { checkFile,uploadFile } = useOss();
 
 /**
  * 查询表单
@@ -293,70 +290,6 @@ const uploadOption: OssUploadOption = {
   }
 };
 
-/**
- * 头像上传
- */
-const profileInputRef = ref<HTMLInputElement | null>(null);
-const handleProfileChange = async (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) {
-    return;
-  }
-  const flag = checkFile(file,uploadOption);
-  if (!flag) {
-    return;
-  }
-  try {
-    showProgress();
-    const path = await uploadFile(file,uploadOption);
-    formEditUser.profilePath = path;
-  }finally {
-    setTimeout(() => {
-      closeProgress();
-    }, 500);
-    if (profileInputRef.value) {
-      profileInputRef.value.value = '';
-    }
-  }
-
-};
-const triggerProfileUpload = () => {
-  profileInputRef.value?.click();
-};
-
-/**
- * 背景上传
- */
-const coverInputRef = ref<HTMLInputElement | null>(null);
-const handleCoverChange = async (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) {
-    return;
-  }
-  const flag = checkFile(file,uploadOption);
-  if (!flag) {
-    return;
-  }
-  try {
-    showProgress();
-    const path = await uploadFile(file,uploadOption);
-    formEditUser.profilePath = path;
-  }finally {
-    setTimeout(() => {
-      closeProgress();
-    }, 500);
-    if (coverInputRef.value) {
-      coverInputRef.value.value = '';
-    }
-  }
-
-};
-const triggerCoverUpload = () => {
-  coverInputRef.value?.click();
-};
-
 onMounted(() => {
   getUserList();
 });
@@ -511,72 +444,21 @@ onMounted(() => {
           </el-col>
 
           <el-col :span="12">
-            <div class="con-img">
-                <div class="con-img-title">头像</div>
-                <div>
-                  <input
-                    ref="profileInputRef"
-                    style="display: none;"
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.webp"
-                    @change="handleProfileChange"
-                  >
-                  <el-button type="primary" plain size="small" @click="triggerProfileUpload" >
-                    <el-icon ><i-ep-upload /></el-icon>
-                    <span>上传</span>
-                  </el-button>
-                </div>
-                <div class="con-img-tip">图片大小不能超过10M。</div>
-
-                <el-image
-                  class="advert-upload-img"
-                  :src="formEditUser.profilePath || ''"
-                  :preview-src-list="formEditUser.profilePath ? [formEditUser.profilePath] : []"
-                  :initial-index="0"
-                  loading="eager"
-                  fit="contain"
-                >
-                  <template #error>
-                    <div class="advert-img-error">
-                      <el-icon :size="25" color="#c0c4cc"><i-ep-picture /></el-icon>
-                    </div>
-                  </template>
-                </el-image>
-            </div>
+            <ImageUploader
+              v-model="formEditUser.profilePath"
+              :upload-option="uploadOption"
+              title="头像"
+              tip="图片大小不能超过10M"
+            />
           </el-col>
 
           <el-col :span="12">
-            <div class="con-img">
-              <div class="con-img-title">背景图</div>
-              <div>
-                <input
-                  ref="coverInputRef"
-                  style="display: none;"
-                  type="file"
-                  accept=".png,.jpg,.jpeg,.webp"
-                  @change="handleCoverChange"
-                >
-                <el-button type="primary" plain size="small" @click="triggerCoverUpload" >
-                  <el-icon ><i-ep-upload /></el-icon>
-                  <span>上传</span>
-                </el-button>
-              </div>
-              <div class="con-img-tip">图片大小不能超过10M。</div>
-              <el-image
-                class="advert-upload-img"
-                :src="formEditUser.coverPath || ''"
-                :preview-src-list="formEditUser.coverPath ? [formEditUser.coverPath] : []"
-                :initial-index="0"
-                loading="eager"
-                fit="contain"
-              >
-                <template #error>
-                  <div class="advert-img-error">
-                    <el-icon :size="25" color="#c0c4cc"><i-ep-picture /></el-icon>
-                  </div>
-                </template>
-              </el-image>
-            </div>
+            <ImageUploader
+              v-model="formEditUser.coverPath"
+              :upload-option="uploadOption"
+              title="背景图"
+              tip="图片大小不能超过10M"
+            />
           </el-col>
         </el-row>
 
@@ -631,16 +513,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.con-img{
-  display: flex;
-  flex-direction: column;
+::v-deep(.con-img){
   padding-left: 40px;
-  gap: 5px;
-}
-.con-img-title{
-  font-weight: 600;
-}
-.con-img-tip{
-  font-size: 12px;
 }
 </style>
