@@ -34,8 +34,31 @@ const getRecordData = async () => {
 };
 
 //记录详情
+const recordDetail = ref<StudyRecord>({
+  id: 0,
+  userId: 0,
+  classifyId: 0,
+  catalogId: 0,
+  tag: '',
+  seat: 0,
+  timingMode: 0,
+  settingDuration: 0,
+  actualDuration: 0,
+  status: 0,
+  noteContent: '',
+  notePath: '',
+  noteStatus: 0,
+  startTime: '',
+  name: '',
+  phone: '',
+  classifyName: '',
+  catalogName: '',
+  parentCatalogName: ''
+});
+const drawerVisible = ref(false);
 const userDetail = (row: StudyRecord) => {
-  console.log(row);
+  recordDetail.value = row;
+  drawerVisible.value = true;
 };
 
 const handleQuery = () => {
@@ -136,7 +159,11 @@ onMounted(async () => {
             <span>{{scope.row.parentCatalogName}}{{scope.row.catalogName}}——{{scope.row.seat}}号</span>
           </template>
         </el-table-column>
-        <el-table-column label="学习标签" prop="tag" />
+        <el-table-column label="学习标签" prop="tag" >
+          <template #default="scope">
+            <el-tag>{{scope.row.tag}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="计时方式"  prop="timingMode" >
           <template #default="scope">
             <span class="blue-color" v-if="scope.row.timingMode === 1">正计时</span>
@@ -150,6 +177,11 @@ onMounted(async () => {
           </template>
         </el-table-column>
         <el-table-column label="开始时间"  prop="startTime" />
+        <el-table-column label="自习时长"  prop="actualDuration" >
+          <template #default="scope">
+            <span >{{scope.row.actualDuration}}分钟</span>
+          </template>
+        </el-table-column>
         <el-table-column  label="操作" width="120">
           <template #default="scope">
             <span class="operation-a blue-color" @click="userDetail(scope.row)">详情</span>
@@ -167,6 +199,57 @@ onMounted(async () => {
         @change="getRecordData"
       />
     </el-card>
+
+    <el-drawer
+      title="记录详情"
+      v-model="drawerVisible"
+    >
+      <el-descriptions :column="2">
+        <el-descriptions-item label="昵称">kooriookami</el-descriptions-item>
+        <el-descriptions-item label="手机号">18100000000</el-descriptions-item>
+        <el-descriptions-item label="图书馆">
+          {{recordDetail.classifyName}}
+        </el-descriptions-item>
+        <el-descriptions-item label="自习室">
+          {{recordDetail.parentCatalogName}}{{recordDetail.catalogName}}——{{recordDetail.seat}}号
+        </el-descriptions-item>
+        <el-descriptions-item label="学习标签">
+          <el-tag>{{recordDetail.tag}}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="计时方式">
+          <span class="blue-color" v-if="recordDetail.timingMode === 1">正计时</span>
+          <span class="green-color" v-else-if="recordDetail.timingMode === 2">倒计时</span>
+        </el-descriptions-item>
+        <el-descriptions-item label="状态">
+          <span class="blue-color" v-if="recordDetail.status === 1">自习中</span>
+          <span v-else-if="recordDetail.status === 3">已完成</span>
+        </el-descriptions-item>
+        <el-descriptions-item label="自习时长">
+          {{recordDetail.actualDuration}}分钟
+        </el-descriptions-item>
+      </el-descriptions>
+      <el-descriptions v-if="recordDetail.noteStatus === 1" :column="1" >
+        <el-descriptions-item label="笔记">{{recordDetail.noteContent}}</el-descriptions-item>
+      </el-descriptions>
+      <el-descriptions v-if="recordDetail.noteStatus === 1" :column="1" direction="vertical">
+        <el-descriptions-item label="笔记图片">
+          <el-image
+            class="advert-upload-img"
+            :src="recordDetail.notePath || ''"
+            :preview-src-list="recordDetail.notePath ? [recordDetail.notePath] : []"
+            :initial-index="0"
+            loading="eager"
+            fit="contain"
+          >
+            <template #error>
+              <div class="advert-img-error">
+                <el-icon :size="25" color="#c0c4cc"><i-ep-picture /></el-icon>
+              </div>
+            </template>
+          </el-image>
+        </el-descriptions-item>
+      </el-descriptions>
+    </el-drawer>
 
   </div>
 </template>

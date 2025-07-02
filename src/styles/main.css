@@ -144,6 +144,9 @@
   font-weight: 700 !important;
   font-size: 14px !important;
 }
+.el-descriptions__label:not(.is-bordered-label) {
+  font-weight: 600 !important;
+}
 
 /* el-card样式 */
 .el-card__header {
