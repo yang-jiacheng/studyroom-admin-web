@@ -67,6 +67,7 @@ const handleCoverChange = async (event: Event) => {
   } finally {
     setTimeout(() => {
       closeProgress();
+      ElMessage.success('上传成功');
     }, 500);
     if (coverInputRef.value) {
       coverInputRef.value.value = '';

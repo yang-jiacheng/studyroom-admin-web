@@ -119,9 +119,13 @@ hr{
   color: #465161 !important;
 }
 .down-a{
-  color: #0c7fd1 !important;
+  color: #0c7fd1;
   text-decoration: none;
   border-bottom: 1px solid #0c7fd1 !important;
+}
+.down-a:hover {
+  color: #183332;
+  cursor: pointer;
 }
 .operation-a{
   display: inline-block;

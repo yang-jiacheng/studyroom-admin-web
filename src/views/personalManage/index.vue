@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useOss from "@/hooks/useOSS.ts";
-const { checkFile, uploadFile } = useOss();
 import { showProgress, closeProgress, updateProgress } from "@/utils/progressOverlay.ts";
 import { useMineInfoStore } from "@/store/mineInfo.ts";
 import { updatePersonal } from "@/api/adminInfo";
@@ -65,7 +64,7 @@ const uploadOption: OssUploadOption = {
 const acceptString = computed(() => {
   return uploadOption.accept.join(',') || '*';
 });
-
+const { checkFile, uploadFile } = useOss();
 const coverInputRef = ref<HTMLInputElement | null>(null);
 const handleCoverChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;

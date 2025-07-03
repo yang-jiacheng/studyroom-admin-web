@@ -117,8 +117,6 @@ export default function () {
       } else {
         finalPath = finalPath.substring(finalPath.indexOf("aliyuncs.com/") + 12);
       }
-
-      ElMessage.success('上传成功！');
       return ossPath.value + finalPath;
     }catch (error: any) {
       console.error(error);
