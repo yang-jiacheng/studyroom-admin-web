@@ -77,3 +77,14 @@ export const getMine = (): Promise<R<AdminInfo>> => {
     method: 'post'
   });
 };
+
+/**
+ * 修改个人资料
+ */
+export const updatePersonal = (data: any): Promise<R<any>> => {
+  return request({
+    url: `/personalManage/updatePersonal`,
+    method: 'post',
+    data: data
+  });
+};

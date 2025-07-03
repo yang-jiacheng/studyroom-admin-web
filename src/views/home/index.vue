@@ -89,8 +89,6 @@
 <script setup lang="ts">
 import { usePermissionStore } from "@/store/permission.ts";
 import { useMineInfoStore } from "@/store/mineInfo.ts";
-import { storeToRefs } from 'pinia';
-import { useRouter,useRoute } from 'vue-router';
 import { removeToken } from '@/utils/auth.ts';
 import { logout } from "@/api/auth/index.ts";
 import { getMine } from "@/api/adminInfo/index.ts";

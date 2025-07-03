@@ -22,9 +22,9 @@ const updateBus = async (row: BusinessConfig) => {
   }
 };
 
-onMounted(() => {
+onMounted( async () => {
   showLoading();
-  getList();
+  await getList();
   closeLoading();
 });
 

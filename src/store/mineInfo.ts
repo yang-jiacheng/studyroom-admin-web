@@ -15,7 +15,6 @@ const defaultInfo: AdminInfo = {
 
 export const useMineInfoStore = defineStore('mineInfo', {
   state: () => ({
-    // 标记路由是否添加
     mine: defaultInfo
   }),
   actions: {
