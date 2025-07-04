@@ -3,7 +3,6 @@ import { getObjectStoragePageList, deleteObjectStorage,saveObjectStorage } from 
 import type { ObjectStorage } from "@/api/objectStorage/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
 import {  updateProgress } from "@/utils/progressOverlay.ts";
-import DragUploader from "@/components/upload/DragUploader.vue";
 
 /**
  * 查询表单
