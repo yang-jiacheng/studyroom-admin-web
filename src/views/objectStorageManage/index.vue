@@ -2,8 +2,8 @@
 import { getObjectStoragePageList, deleteObjectStorage,saveObjectStorage } from "@/api/objectStorage/index.ts";
 import type { ObjectStorage } from "@/api/objectStorage/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
-import { closeProgress, showProgress, updateProgress } from "@/utils/progressOverlay.ts";
-import useOss from "@/hooks/useOSS.ts";
+import {  updateProgress } from "@/utils/progressOverlay.ts";
+import DragUploader from "@/components/upload/DragUploader.vue";
 
 /**
  * 查询表单
@@ -60,6 +60,10 @@ const handleDownloadUrl = async (row: ObjectStorage) => {
   }
 };
 
+const showExportDialog = () => {
+  dialogExport.visible = true;
+};
+
 //删除对象存储
 const deleteObjectStorageItem = (row: ObjectStorage) => {
   ElMessageBox.confirm(
@@ -81,7 +85,7 @@ const deleteObjectStorageItem = (row: ObjectStorage) => {
 };
 
 /**
- * 上传文件
+ * 上传文件弹窗
  */
 const uploadOption: OssUploadOption = {
   headers: {
@@ -96,50 +100,37 @@ const uploadOption: OssUploadOption = {
     updateProgress(percentage);
   }
 };
-
-// 动态计算 accept 字符串
-const acceptString = computed(() => {
-  return uploadOption.accept.join(',') || '*';
+const dialogExport = reactive<DialogOption>({
+  visible: false,
+  title: '上传文件'
 });
+const singleUploaderRef = ref();
+const handleSuccess = async (file: FileItem) => {
+  ElMessage.success(`文件上传成功`);
+  cancelExportDialog();
 
-const { checkFile, uploadFile } = useOss();
-const coverInputRef = ref<HTMLInputElement | null>(null);
-const handleCoverChange = async (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) {
-    return;
-  }
-  const flag = checkFile(file,uploadOption);
-  if (!flag) {
-    return;
-  }
-  try {
-    const fileName = file.name;
-    showProgress();
-    const path = await uploadFile(file,uploadOption) || '';
-    if (path) {
-      const payload = {
-        fileName: fileName,
-        fileSize: (file.size / (1024 * 1024)).toFixed(2),
-        downloadUrl: path
-      };
-      await saveObjectStorage(payload);
-      resetQuery();
-    }
-  }finally {
-    setTimeout(() => {
-      closeProgress();
-      ElMessage.success('上传成功');
-    }, 500);
-    if (coverInputRef.value) {
-      coverInputRef.value.value = '';
-    }
-  }
-
+  const payload = {
+    fileName: file.name,
+    fileSize: (file.size / (1024 * 1024)).toFixed(2),
+    downloadUrl: file.url || ''
+  };
+  await saveObjectStorage(payload);
+  resetQuery();
 };
-const triggerCoverUpload = () => {
-  coverInputRef.value?.click();
+
+const handleError = (error: Error, file: FileItem) => {
+  console.error('上传失败:', error, file);
+  ElMessage.error(`文件 ${file.name} 上传失败: ${error.message}`);
+  singleUploaderRef.value?.clearFiles();
+};
+
+const cancelExportDialog = () => {
+  dialogExport.visible = false;
+  singleUploaderRef.value?.clearFiles();
+};
+
+const submitExportDialog = () => {
+  singleUploaderRef.value?.uploadFiles();
 };
 
 onMounted(async () => {
@@ -177,14 +168,7 @@ onMounted(async () => {
     <template #header>
       <el-row :gutter="10" style="display: flex; justify-content: space-between;">
         <div>
-          <input
-            ref="coverInputRef"
-            style="display: none;"
-            type="file"
-            :accept="acceptString"
-            @change="handleCoverChange"
-          >
-          <el-button type="primary" plain @click="triggerCoverUpload">
+          <el-button type="primary" plain @click="showExportDialog">
             <el-icon ><i-ep-plus /></el-icon>
             <span>添加文件</span>
           </el-button>
@@ -225,6 +209,31 @@ onMounted(async () => {
       @change="getObjectStorageList"
     />
   </el-card>
+
+  <el-dialog :close-on-click-modal="false" :destroy-on-close="true"   v-model="dialogExport.visible" :before-close="cancelExportDialog"  width="500">
+    <template #header>
+      <span style="font-size: 15px">{{dialogExport.title}}</span>
+    </template>
+    <div style="margin: 20px 0;">
+      <DragUploader
+        ref="singleUploaderRef"
+        :multiple="false"
+        :upload-option="uploadOption"
+        @success="handleSuccess"
+        @error="handleError"
+      >
+        <template #tip>
+          <span class="el-upload__tip">文件大小不能超过1024MB，仅支持单文件上传</span>
+        </template>
+      </DragUploader>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="submitExportDialog"> 确定 </el-button>
+        <el-button @click="cancelExportDialog">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 
 </div>
 </template>

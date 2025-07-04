@@ -32,5 +32,10 @@ export const constantRoute = [
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
     name: '404'
+  },
+  {
+    path: '/exampleDragUploader',
+    component: () => import('@/views/examples/DragUploaderExample.vue'),
+    name: 'exampleDragUploader'
   }
 ];

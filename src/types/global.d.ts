@@ -52,6 +52,14 @@ declare global {
     action?: string;
   }
 
+  interface FileItem {
+    name: string;
+    size: number;
+    status: 'waiting' | 'uploading' | 'success' | 'error';
+    url?: string;
+    raw?: File;
+  }
+
   /**
    * 分页数据
    * T : 表单数据

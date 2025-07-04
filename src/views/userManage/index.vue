@@ -474,7 +474,7 @@ onMounted(() => {
 
   <el-dialog :close-on-click-modal="false" :destroy-on-close="true"   v-model="dialogExport.visible" :before-close="cancelExportDialog"  width="500">
     <template #header>
-      <span style="font-size: 15px">导入学员</span>
+      <span style="font-size: 15px">{{dialogExport.title}}</span>
     </template>
     <div style="margin: 20px 0;">
       <el-upload
