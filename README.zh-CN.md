@@ -68,7 +68,7 @@ studyroom-admin-web
 
 ### 6. 演示地址
 
-后台管理系统：http://115.29.185.30/selfStudyAdmin/login
+后台管理系统：http://115.29.185.30/studyRoomAdminWeb/#/
 
 演示账号：管理员：yjc123/123456；其他角色：xiuyu123/123456
 

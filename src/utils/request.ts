@@ -14,7 +14,9 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
 //创建axios实例
 const request = axios.create({
-  baseURL: import.meta.env.VITE_APP_PROXY_API,
+  baseURL: import.meta.env.NODE_ENV === 'production' 
+    ? import.meta.env.VITE_SERVE 
+    : import.meta.env.VITE_APP_PROXY_API,
   timeout: 30000,
   withCredentials: true
 });
