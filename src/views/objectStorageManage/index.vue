@@ -3,6 +3,7 @@ import { getObjectStoragePageList, deleteObjectStorage,saveObjectStorage } from 
 import type { ObjectStorage } from "@/api/objectStorage/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
 import {  updateProgress } from "@/utils/progressOverlay.ts";
+import { copyToClipboardWithMessage } from "@/utils/clipboard.ts";
 
 /**
  * 查询表单
@@ -50,13 +51,7 @@ const getObjectStorageList = async () => {
 };
 
 const handleDownloadUrl = async (row: ObjectStorage) => {
-  try {
-    await navigator.clipboard.writeText(row.downloadUrl || '');
-    ElMessage.success('下载地址已复制到剪切板');
-  } catch (err) {
-    console.error('复制失败:', err);
-    ElMessage.error('复制失败，请手动复制');
-  }
+  window.open(row.downloadUrl);
 };
 
 const showExportDialog = () => {

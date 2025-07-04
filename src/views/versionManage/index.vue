@@ -4,6 +4,7 @@ import type { Version } from "@/api/version/type.ts";
 import { getVersionList,saveVersion } from "@/api/version";
 import { closeProgress, showProgress, updateProgress } from "@/utils/progressOverlay.ts";
 import useOss from "@/hooks/useOSS.ts";
+import { copyToClipboardWithMessage } from "@/utils/clipboard.ts";
 
 const loading = ref(false);
 const userTableRef = ref<ElTableInstance>();
@@ -28,13 +29,7 @@ const handleUpdate = (row: Version) => {
 };
 
 const handleDownloadUrl = async (row: Version) => {
-  try {
-    await navigator.clipboard.writeText(row.downloadUrl || '');
-    ElMessage.success('下载地址已复制到剪切板');
-  } catch (err) {
-    console.error('复制失败:', err);
-    ElMessage.error('复制失败，请手动复制');
-  }
+  window.open(row.downloadUrl);
 };
 
 /**
