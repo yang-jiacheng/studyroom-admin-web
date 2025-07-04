@@ -112,7 +112,7 @@ async function submitDialog () {
   if (code === 0) {
     ElMessage.success('操作成功');
     dialog.visible = false;
-    handleQuery ();
+    resetQuery();
   }
 }
 
@@ -178,6 +178,7 @@ async function deleteRole (row: any) {
       const { code } = await removeRoleById(row.id);
       queryParams.value.page = 1;
       if (code === 0) {
+        resetQuery();
         ElMessage({
           type: 'success',
           message: '删除成功',
@@ -189,12 +190,14 @@ async function deleteRole (row: any) {
 
 //重置查询条件
 const resetQuery = () => {
-  createTime.value = [];
   queryFormRef.value?.resetFields();
   nextTick(() => {
-    getRoleList();
+    if (queryParams.value.page > 1){
+      queryParams.value.page = 1;
+    }else {
+      getRoleList();
+    }
   });
-
 };
 
 function handleQuery (){
