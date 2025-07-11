@@ -32,8 +32,11 @@ defineProps<{
   justify-content: center;
 }
 .container {
-  text-align: center;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .text {
   margin-top: 10px;

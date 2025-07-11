@@ -26,8 +26,6 @@ export default defineConfigWithVueTs(
     rules: {
       // 禁止使用 var
       'no-var': 'error',
-      // 根据生产环境情况禁止 console 的使用
-      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
       // 强制语句以分号结尾
       'semi': ['error', 'always'],
       // 规定必须使用单引号
