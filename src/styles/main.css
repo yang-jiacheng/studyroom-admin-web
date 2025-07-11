@@ -219,7 +219,9 @@ hr{
   background-color: #eeeeee;
   border-radius: 4px;
 }
-
+::-webkit-scrollbar {
+  width: 7px !important;
+}
 /* 设置滚动条滑块为渐变色 */
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;

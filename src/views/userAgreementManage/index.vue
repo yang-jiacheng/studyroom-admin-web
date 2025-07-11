@@ -2,7 +2,6 @@
 import { getAgreement,saveAgreement } from "@/api/agreement";
 import useTinymce from "@/hooks/useTinymce.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
-import { ElMessage } from "element-plus";
 
 const tinyId = 'content';
 const {  initEditor, getContent, setContent } = useTinymce();

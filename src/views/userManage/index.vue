@@ -516,4 +516,13 @@ onMounted(() => {
 ::v-deep(.con-img){
   padding-left: 40px;
 }
+/* 确保 ElNotification 显示在 dialog 蒙版之上 */
+.el-notification {
+  z-index: 3000 !important;
+}
+
+/* 如果需要，也可以降低 dialog 蒙版的层级 */
+.el-overlay {
+  z-index: 2000 !important;
+}
 </style>

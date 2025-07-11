@@ -24,7 +24,11 @@ export async function downloadFile (
   try {
     showLoading("文件下载中...请稍候",1000 * 60);
     const response = await request.request<Blob>(config);
-
+    const dataType = response.data.type;
+    if (!dataType.includes('application/octet-stream')) {
+      ElMessage.error('下载失败！');
+      return;
+    }
     // 解析文件名:attachment;filename=%E7%94%A8%E6%88%B7%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx
     const disposition = response.headers['content-disposition'] || '';
     let filename = 'download';

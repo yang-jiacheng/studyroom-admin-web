@@ -13,15 +13,12 @@ const defaultOssUploadOption: OssUploadOption = {
 };
 
 export default function () {
-
-  const ossPath = ref('');
   const compressionSize = ref(0);
 
   // 获取OSS上传凭证
   async function getOssStaToken () {
     const { result } = await getStsToken();
     if (result) {
-      ossPath.value = result.ossPath;
       compressionSize.value = result.compressionSize;
       return result.credentials;
     }
@@ -117,7 +114,7 @@ export default function () {
       } else {
         finalPath = finalPath.substring(finalPath.indexOf("aliyuncs.com/") + 12);
       }
-      return ossPath.value + finalPath;
+      return import.meta.env.VITE_APP_OSS_URL + finalPath;
     }catch (error: any) {
       console.error(error);
       ElMessage.error('上传失败！');

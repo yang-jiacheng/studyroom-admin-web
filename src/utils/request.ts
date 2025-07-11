@@ -37,7 +37,7 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use((response) => {
 
   // 检查是否是文件下载请求，以及响应数据是否为 Blob 类型
-  if (response.config.responseType === 'blob') {
+  if (response.config.responseType === 'blob' || response.request.responseType === 'arraybuffer') {
     return response; // 直接返回响应，包含 Blob 数据
   }
 
