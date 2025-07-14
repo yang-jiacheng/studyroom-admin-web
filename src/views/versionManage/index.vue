@@ -4,7 +4,6 @@ import type { Version } from "@/api/version/type.ts";
 import { getVersionList,saveVersion } from "@/api/version";
 import { closeProgress, showProgress, updateProgress } from "@/utils/progressOverlay.ts";
 import useOss from "@/hooks/useOSS.ts";
-import { copyToClipboardWithMessage } from "@/utils/clipboard.ts";
 
 const loading = ref(false);
 const userTableRef = ref<ElTableInstance>();
