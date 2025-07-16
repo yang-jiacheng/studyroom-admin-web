@@ -6,8 +6,8 @@
  * @returns  压缩后的 File 对象
  */
 export async function compressImageFile (inputFile: File, scale = 1, quality = 0.75) {
-  let imageBitmap = null;
-  let canvas = null;
+  let imageBitmap: ImageBitmap | null = null;
+  let canvas: OffscreenCanvas | null = null;
 
   try {
     // 1. 解码图片为 ImageBitmap（独立内存区）
@@ -18,14 +18,15 @@ export async function compressImageFile (inputFile: File, scale = 1, quality = 0
       imageBitmap.width  * scale,
       imageBitmap.height  * scale
     );
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas.getContext('2d') as OffscreenCanvasRenderingContext2D;
     if (!ctx){
       throw new Error('无法获取Canvas 2D上下文');
     }
     ctx.drawImage(imageBitmap,  0, 0, canvas.width,  canvas.height);
 
     // 3. 转换为压缩后的 Blob
-    const compressedBlob = await canvas.convertToBlob({
+    const compressedBlob = await (canvas as any).convertToBlob({
       type: inputFile.type.startsWith('image/')  ? inputFile.type  : 'image/jpeg',
       quality
     });
