@@ -1,11 +1,20 @@
 import { useStorage } from '@vueuse/core';
+import type { TokenPair } from "@/api/auth/type.ts";
 
 export const TokenKey = 'selfStudyAdminToken';
 
-const tokenStorage = useStorage<null | string>(TokenKey, null);
+export const RefreshTokenKey = 'refreshToken';
 
-export const getToken = () => tokenStorage.value;
+const tokenStorage = useStorage<null | TokenPair>(TokenKey, null);
 
-export const setToken = (access_token: string) => (tokenStorage.value = access_token);
+export const getAccessToken = () => {
+  return tokenStorage.value?.accessToken;
+};
+
+export const getRefreshToken = () => {
+  return tokenStorage.value?.refreshToken;
+};
+
+export const setToken = (tokenPair: TokenPair) => (tokenStorage.value = tokenPair);
 
 export const removeToken = () => (tokenStorage.value = null);

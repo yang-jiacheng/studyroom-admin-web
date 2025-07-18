@@ -58,14 +58,14 @@ const login = async () => {
       verifyCode: captcha.value,
       uuid: dataKaptcha.value.uuid
     };
-    const res = await loginWithVerifyCode(data);
-    if (res.code === 0) {
+    const { code, result } = await loginWithVerifyCode(data);
+    if (code === 0 && result) {
       ElMessage({
         type: 'success',
         message: "登录成功~",
         duration: 2000
       });
-      setToken(res.result);
+      setToken(result);
       await router.push({ path: '/main' });
     }
 

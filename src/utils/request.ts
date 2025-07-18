@@ -1,11 +1,11 @@
 import  axios from 'axios';
-import { TokenKey,getToken,removeToken } from './auth.ts';
-import { logout } from "@/api/auth/index.ts";
+import { TokenKey,getAccessToken,getRefreshToken,removeToken,setToken } from './auth.ts';
+import { logout,refresh } from "@/api/auth/index.ts";
 
 // 全局请求头
 export const globalHeaders = () => {
   return {
-    [TokenKey]: getToken()
+    [TokenKey]: getAccessToken()
   };
 };
 
@@ -24,7 +24,7 @@ const request = axios.create({
 //请求拦截器
 request.interceptors.request.use(config => {
   // 让每个请求携带token
-  const token = getToken();
+  const token = getAccessToken();
   if (token) {
     config.headers[TokenKey] = token;
   }
@@ -34,6 +34,45 @@ request.interceptors.request.use(config => {
   }
   return config;
 });
+
+// --- 全局状态，用于处理Token刷新逻辑 ---
+// 标记是否正在刷新Token
+let isRefreshing = false;
+// 存储在刷新期间需要重新发送的请求
+type Subscriber = (token: string | null) => void;
+let subscribers: Subscriber[] = [];
+
+/**
+ * 将请求推入等待队列
+ */
+const subscribeTokenRefresh = (callback: Subscriber) => {
+  subscribers.push(callback);
+};
+
+/**
+ * 刷新成功后，通知所有等待者新 Token
+ */
+const onRefreshed = (token: string) => {
+  subscribers.forEach(callback => callback(token));
+  subscribers = [];
+};
+
+/**
+ * 刷新失败，通知所有等待者任务失败 (token为null)
+ */
+const onRefreshFailed = () => {
+  subscribers.forEach(callback => callback(null));
+  subscribers = [];
+};
+
+// 跳转登录页函数
+const redirectToLogin = () => {
+  onRefreshFailed();
+  logout().finally(() => {
+    removeToken();
+    location.href = `${import.meta.env.VITE_APP_CONTEXT_PATH}#/login`;
+  });
+};
 
 //响应拦截器
 request.interceptors.response.use((response) => {
@@ -49,24 +88,60 @@ request.interceptors.response.use((response) => {
     return Promise.resolve(response.data);
   }else if (code === 1000){
     // 登录失效
-    ElMessage({
-      type: 'error',
-      message: msg,
-      duration: 2500
-    });
-    // 清除token
-    logout().then(() => {
-      removeToken();
-    });
-    // 跳转登录页面
-    location.href = import.meta.env.VITE_APP_CONTEXT_PATH + '#/login';
+    ElMessage.error(msg);
+    redirectToLogin();
     return Promise.reject(msg);
-  } else {
-    ElMessage({
-      type: 'error',
-      message: msg,
-      duration: 2500
+
+  } else if (code === 401){
+    // AccessToken 失效,使用RefreshToken获取新的AccessToken
+    const originalRequest = response.config;
+    // 如果当前没有在刷新，则发起刷新请求
+    if (!isRefreshing) {
+      isRefreshing = true;
+      const refreshToken = getRefreshToken();
+      if (!refreshToken){
+        // 无RefreshToken，跳转登录页面
+        redirectToLogin();
+        return Promise.reject("没有 refreshToken");
+      }
+
+      return refresh().then((res) => {
+        if (res.code === 0) {
+          const tokenPair = res.result;
+          setToken(tokenPair);
+          onRefreshed(tokenPair.accessToken);
+          // retry 原请求并返回
+          originalRequest.headers![TokenKey] = tokenPair.accessToken;
+          return request(originalRequest);
+        } else {
+          // refresh API 返回业务失败，例如 refreshToken 也无效了
+          throw new Error(res.msg || "会话刷新失败");
+        }
+      }).catch((err) => {
+        redirectToLogin();
+        return Promise.reject(err);
+      }).finally(() => {
+        isRefreshing = false;
+      });
+
+    }
+
+    // 正在刷新中，挂起当前请求
+    return new Promise((resolve, reject) => {
+      subscribeTokenRefresh(token => {
+        if (token) {
+          // 成功后，更新 header，重发请求
+          originalRequest.headers![TokenKey] = token;
+          resolve(request(originalRequest));
+        } else {
+          // 刷新失败
+          reject('token刷新失败，未重新发起请求');
+        }
+      });
     });
+
+  } else {
+    ElMessage.error(msg);
     return Promise.reject(msg);
   }
 
@@ -93,4 +168,5 @@ request.interceptors.response.use((response) => {
   ElMessage.error(message);
   return Promise.reject(error);
 });
+
 export default request;

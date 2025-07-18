@@ -5,3 +5,8 @@ export interface LoginVerifyCodeDTO {
   uuid: string;
   device?: string | 'web';
 }
+
+export interface TokenPair {
+  accessToken: string;
+  refreshToken: string;
+}
