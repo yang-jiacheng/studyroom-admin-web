@@ -4,6 +4,7 @@
 
   // 包含哪些文件参与 TypeScript 编译
   "include": [
+    "plugins/*.ts",
     "env.d.ts",                      // Vite 创建项目时自动生成的环境类型声明
     "src/**/*.ts",                   // 所有 ts 文件
     "src/**/*.d.ts",                 // 所有类型声明文件
