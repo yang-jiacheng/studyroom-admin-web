@@ -39,3 +39,5 @@ yarn.lock
 auto-imports.d.ts
 components.d.ts
 
+bundle-analyzer.html
+

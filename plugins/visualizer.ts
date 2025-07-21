@@ -9,7 +9,7 @@ export default (path: any,isBuild: boolean): PluginOption[] => {
       open: true, // 构建完成后自动在浏览器中打开报告
       gzipSize: true, // 显示 gzip 压缩后的大小
       brotliSize: false, // 显示 brotli 压缩后的大小（如果你的服务器支持）
-      filename: path.resolve(__dirname, '../dist', 'bundle-analyzer.html') // 报告文件名，生成在 dist 目录下
+      filename: 'bundle-analyzer.html' // 报告文件名
     }));
   }
   return plugins;
