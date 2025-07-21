@@ -1,6 +1,7 @@
 import  axios from 'axios';
 import { TokenKey,getAccessToken,getRefreshToken,removeToken,setToken } from './auth.ts';
 import { logout,refresh } from "@/api/auth/index.ts";
+import type { TokenPair } from "@/api/auth/type.ts";
 
 // 全局请求头
 export const globalHeaders = () => {
@@ -107,7 +108,10 @@ request.interceptors.response.use((response) => {
 
       return refresh().then((res) => {
         if (res.code === 0) {
-          const tokenPair = res.result;
+          const tokenPair: TokenPair = {
+            accessToken: res.result.accessToken,
+            refreshToken: res.result.refreshToken
+          };
           setToken(tokenPair);
           onRefreshed(tokenPair.accessToken);
           // retry 原请求并返回
@@ -118,7 +122,6 @@ request.interceptors.response.use((response) => {
           throw new Error(res.msg || "会话刷新失败");
         }
       }).catch((err) => {
-        redirectToLogin();
         return Promise.reject(err);
       }).finally(() => {
         isRefreshing = false;
@@ -135,7 +138,9 @@ request.interceptors.response.use((response) => {
           resolve(request(originalRequest));
         } else {
           // 刷新失败
-          reject('token刷新失败，未重新发起请求');
+          const msg = 'token刷新失败，请重新登录';
+          console.error(msg);
+          reject(msg);
         }
       });
     });

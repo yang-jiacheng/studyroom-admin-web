@@ -5,7 +5,7 @@ import { encryptSha256 } from "@/utils/encrypt.ts";
 import { setToken } from '@/utils/auth.ts';
 import { showLoading,closeLoading } from "@/utils/loading.ts";
 import { loginWithVerifyCode } from "@/api/auth/index.ts";
-import type { LoginVerifyCodeDTO } from "@/api/auth/type.ts";
+import type { LoginVerifyCodeDTO, TokenPair } from "@/api/auth/type.ts";
 const router = useRouter();
 
 /**
@@ -65,7 +65,11 @@ const login = async () => {
         message: "登录成功~",
         duration: 2000
       });
-      setToken(result);
+      const tokenPair: TokenPair = {
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken
+      };
+      setToken(tokenPair);
       await router.push({ path: '/main' });
     }
 

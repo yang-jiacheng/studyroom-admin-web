@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory,type RouteRecordRaw }  from 'vue-router';
 import { constantRoute } from '@/router/routes.ts';
 import { usePermissionStore } from '@/store/permission.ts';
-import { getToken } from '@/utils/auth.ts';
+import { getAccessToken } from '@/utils/auth.ts';
 import { getMinePermissionTree } from "@/api/permission";
 import type { PermissionTreeVO } from "@/api/permission/type.ts";
 
@@ -51,8 +51,7 @@ function transformRoutes (backendRoutes: PermissionTreeVO[]): RouteRecordRaw[] {
 router.beforeEach(async (to, from, next) => {
   const permissionStore = usePermissionStore();
   // 假设有一个判断是否已登录的逻辑
-  const token = getToken();
-
+  const token = getAccessToken();
   // 🧤 保护 login 页面不再获取权限路由
   if (to.path === '/login') {
     next();
