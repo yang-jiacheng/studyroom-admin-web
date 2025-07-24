@@ -20,6 +20,9 @@ export const loginWithVerifyCode = (data: LoginVerifyCodeDTO): Promise<R<TokenPa
 export const logout = (): Promise<R<any>> => {
   return request({
     url: '/token/logout',
+    headers: {
+      [RefreshTokenKey]: getRefreshToken()
+    },
     method: 'post'
   });
 };
