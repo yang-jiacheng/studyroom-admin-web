@@ -4,6 +4,7 @@ import { usePermissionStore } from '@/store/permission.ts';
 import { getAccessToken } from '@/utils/auth.ts';
 import { getMinePermissionTree } from "@/api/permission";
 import type { PermissionTreeVO } from "@/api/permission/type.ts";
+import { closeLoading, showLoading } from "@/utils/loading.ts";
 
 /**
  * 创建路由实例
@@ -62,6 +63,7 @@ router.beforeEach(async (to, from, next) => {
     // 如果尚未添加动态路由，则获取后端菜单并动态添加
     try {
       //获取后端路由
+      showLoading("正在加载系统资源...",10000);
       const backendRoutes = await getMinePermissionTree();
       const r = backendRoutes.result ? backendRoutes.result : [];
       const newRoutes = transformRoutes(r);
@@ -75,10 +77,11 @@ router.beforeEach(async (to, from, next) => {
       permissionStore.setTree(r);
       // 标记已添加
       permissionStore.setRoutesAdded(true);
-
+      closeLoading();
       next(to.fullPath);
       return;
     } catch (error) {
+      closeLoading();
       console.error('获取路由失败：', error);
       next('/login');
       return;
