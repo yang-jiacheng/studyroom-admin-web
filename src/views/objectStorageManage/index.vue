@@ -86,7 +86,7 @@ const uploadOption: OssUploadOption = {
     'Access-Control-Allow-Origin': '*'
   },
   accept: [],
-  maxSizeMb: 1024,
+  maxSizeMb: 1024 * 5,
   partSize: 1024 * 1024, // 1MB
   parallel: 5,
   onProgress: (percentage) => {
@@ -217,7 +217,7 @@ onMounted(async () => {
         @error="handleError"
       >
         <template #tip>
-          <span class="el-upload__tip">文件大小不能超过1024MB，仅支持单文件上传</span>
+          <span class="el-upload__tip">文件大小不能超过5GB，仅支持单文件上传</span>
         </template>
       </DragUploader>
     </div>

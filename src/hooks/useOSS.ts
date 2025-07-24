@@ -69,7 +69,12 @@ export default function () {
     // 校验文件大小
     const maxSize = uploadOpt.maxSizeMb * 1024 * 1024;
     if (file.size > maxSize) {
-      ElMessage.warning(`文件大小不能超过 ${uploadOpt.maxSizeMb}MB！`);
+      if (uploadOpt.maxSizeMb > 1024) {
+        const maxSizeGB = (uploadOpt.maxSizeMb / 1024).toFixed(1);
+        ElMessage.warning(`文件大小不能超过 ${maxSizeGB}GB！`);
+      } else {
+        ElMessage.warning(`文件大小不能超过 ${uploadOpt.maxSizeMb}MB！`);
+      }
       return false;
     }
 
