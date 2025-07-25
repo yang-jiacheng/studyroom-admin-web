@@ -290,7 +290,10 @@ studyroom-admin-web is licensed under the Apache License, Version 2.0. See [LICE
 
 ---
 
-<div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
-<p><strong>⭐ If this project helps you, please give me a Star! ⭐</strong></p>
-<p><strong>📢 Welcome to share with more friends in need! 📢</strong></p>
+<div align="center">
+
+**⭐ If this project helps you, please give me a Star! ⭐**
+
+**📢 Welcome to share with more friends in need! 📢**
+
 </div>

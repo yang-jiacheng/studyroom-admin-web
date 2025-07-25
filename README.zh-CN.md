@@ -289,8 +289,11 @@ studyroom-admin-web 是根据Apache许可证2.0版获得许可的。有关完整
 
 ---
 
-<div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
-<p><strong>⭐ 如果这个项目对您有帮助，请给我一个Star！⭐</strong></p>
-<p><strong>📢 欢迎分享给更多需要的朋友！📢</strong></p>
+<div align="center">
+
+**⭐ 如果这个项目对您有帮助，请给我一个Star！⭐**
+
+**📢 欢迎分享给更多需要的朋友！📢**
+
 </div>
 
