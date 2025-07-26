@@ -217,7 +217,7 @@ onMounted(async () => {
         @error="handleError"
       >
         <template #tip>
-          <span class="el-upload__tip">文件大小不能超过5GB，仅支持单文件上传</span>
+          <span>文件大小不能超过5GB，仅支持单文件上传</span>
         </template>
       </DragUploader>
     </div>
