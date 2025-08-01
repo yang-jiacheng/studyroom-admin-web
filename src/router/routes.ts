@@ -38,4 +38,10 @@ export const constantRoute = [
     component: () => import('@/views/examples/DragUploaderExample.vue'),
     name: 'exampleDragUploader'
   }
+  ,
+  {
+    path: '/exampleDES',
+    component: () => import('@/views/examples/DESExample.vue'),
+    name: 'exampleDES'
+  }
 ];
