@@ -36,6 +36,7 @@ export default function () {
         accessKeySecret: stsResponse.accessKeySecret, // 临时凭证AccessKeySecret
         stsToken: stsResponse.securityToken, // 临时凭证SecurityToken
         secure: true, // 使用HTTPS
+        timeout: 300000, // 超时时间 5分钟
         refreshSTSToken: async () => {
           const stsResponse = await getOssStaToken(); // 获取新凭证
           return {

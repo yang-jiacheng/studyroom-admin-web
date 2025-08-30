@@ -87,7 +87,7 @@ const uploadOption: OssUploadOption = {
   },
   accept: [],
   maxSizeMb: 1024 * 5,
-  partSize: 1024 * 1024, // 1MB
+  partSize: 1024 * 1024 * 2, // 2MB
   parallel: 5,
   onProgress: (percentage) => {
     // 更新进度条
