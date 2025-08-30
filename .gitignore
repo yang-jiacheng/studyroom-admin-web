@@ -31,9 +31,6 @@ coverage
 
 .idea/
 
-# Use the npm
-package-lock.json
-yarn.lock
 
 # 编译生成的文件
 auto-imports.d.ts
