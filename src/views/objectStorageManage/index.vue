@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getObjectStoragePageList, deleteObjectStorage,saveObjectStorage } from "@/api/objectStorage/index.ts";
+import { getObjectStoragePageList,deleteObjectStorage,saveObjectStorage } from "@/api/objectStorage/index.ts";
 import type { ObjectStorage } from "@/api/objectStorage/type.ts";
-import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { closeLoading,showLoading } from "@/utils/loading.ts";
 import {  updateProgress } from "@/utils/progressOverlay.ts";
 import { copyToClipboardWithMessage } from "@/utils/clipboard.ts";
 
@@ -11,7 +11,7 @@ import { copyToClipboardWithMessage } from "@/utils/clipboard.ts";
 const queryFormRef = ref<ElFormInstance>();
 const queryParams = ref({
   page: 1,
-  limit: 10,
+  limit: 10 ,
   name: ''
 });
 

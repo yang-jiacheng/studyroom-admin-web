@@ -238,6 +238,12 @@ onMounted(() => {
               <i-ep-delete />
             </el-icon>
           </div>
+          <!-- 只有 hover 且 level >= 3 时显示删除按钮 -->
+          <div v-if="hoverNodeId === data.id && node.level >= 3" class="icon-actions">
+            <el-icon :size="19" color="#f56c6c" class="icon-item" @click.stop="handleDelete(data)">
+              <i-ep-delete />
+            </el-icon>
+          </div>
         </div>
       </template>
     </el-tree>
