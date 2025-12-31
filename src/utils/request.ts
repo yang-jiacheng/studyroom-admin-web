@@ -46,34 +46,44 @@ let subscribers: Subscriber[] = [];
 /**
  * 将请求推入等待队列
  */
-const subscribeTokenRefresh = (callback: Subscriber) => {
+function subscribeTokenRefresh (callback: Subscriber) {
   subscribers.push(callback);
-};
+}
 
 /**
  * 刷新成功后，通知所有等待者新 Token
  */
-const onRefreshed = (token: string) => {
-  subscribers.forEach(callback => callback(token));
+function onRefreshed (token: string) {
+  for (let i = 0; i < subscribers.length; i++) {
+    const callback = subscribers[i];
+    callback(token);
+  }
   subscribers = [];
-};
+}
 
 /**
- * 刷新失败，通知所有等待者任务失败 (token为null)
+ * 刷新失败，通知所有等待者任务失败 (token 为 null)
  */
-const onRefreshFailed = () => {
-  subscribers.forEach(callback => callback(null));
+function onRefreshFailed () {
+  for (let i = 0; i < subscribers.length; i++) {
+    const callback = subscribers[i];
+    callback(null);
+  }
   subscribers = [];
-};
+}
 
-// 跳转登录页函数
-const redirectToLogin = () => {
+/**
+ * 跳转登录页函数
+ */
+function redirectToLogin () {
+  // 先通知所有挂起请求失败
   onRefreshFailed();
-  logout().finally(() => {
+  // 再执行登出逻辑并跳转
+  logout().finally(function () {
     removeToken();
-    location.href = `${import.meta.env.VITE_APP_CONTEXT_PATH}#/login`;
+    location.href = import.meta.env.VITE_APP_CONTEXT_PATH + '#/login';
   });
-};
+}
 
 //响应拦截器
 request.interceptors.response.use((response) => {
@@ -126,15 +136,14 @@ request.interceptors.response.use((response) => {
       }).finally(() => {
         isRefreshing = false;
       });
-
     }
 
     // 正在刷新中，挂起当前请求
-    return new Promise((resolve, reject) => {
-      subscribeTokenRefresh(token => {
+    return new Promise(function (resolve, reject) {
+      function onTokenRefreshed (token : string | null) {
         if (token) {
-          // 成功后，更新 header，重发请求
-          originalRequest.headers![TokenKey] = token;
+          // 刷新成功：带新 token 重发请求
+          originalRequest.headers[TokenKey] = token;
           resolve(request(originalRequest));
         } else {
           // 刷新失败
@@ -142,7 +151,9 @@ request.interceptors.response.use((response) => {
           console.error(msg);
           reject(msg);
         }
-      });
+      }
+      // 把回调函数注册进去，等 refresh 完成后被调用
+      subscribeTokenRefresh(onTokenRefreshed);
     });
 
   } else {
