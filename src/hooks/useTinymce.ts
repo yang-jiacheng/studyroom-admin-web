@@ -1,4 +1,6 @@
 import { loadScripts } from "@/utils/loadHttpSourse.ts";
+import { getAccessToken, TokenKey } from "@/utils/auth.ts";
+import type { R } from "@/api/R.ts";
 
 const ossPrefixTiny = import.meta.env.VITE_APP_OSS_URL;
 const tinyPlugins = 'fullscreen,code,lists,advlist,image,link,kityformula-editor';
@@ -70,6 +72,7 @@ export default function useTinymce () {
         const file = blobInfo.blob(); // 获取文件对象
 
         xhr.open('POST', uploadUrlTiny);
+        xhr.setRequestHeader(TokenKey, getAccessToken() || '');
         xhr.upload.onprogress = (e) => progress(e.loaded / e.total * 100);
 
         xhr.onload = () => {
@@ -77,12 +80,12 @@ export default function useTinymce () {
             failFun('HTTP Error: ' + xhr.status);
             return;
           }
-          const json = JSON.parse(xhr.responseText);
-          if (json.code !== 0) {
-            failFun('请求上传接口出现异常');
+          const json = JSON.parse(xhr.responseText) as R<string []>;
+          if (json.code !== 0 || !json.result) {
+            failFun('上传失败，请刷新页面后重试');
             return;
           }
-          succFun(ossPrefixTiny + json.data[0]);
+          succFun(ossPrefixTiny + json.result[0]);
         };
 
         const formData = new FormData();
