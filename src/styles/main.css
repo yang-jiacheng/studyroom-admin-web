@@ -4,6 +4,9 @@
   box-sizing: border-box;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
+html, body {
+  height: 100%;
+}
 hr{
   line-height: 0;
   margin: 10px 0;
@@ -14,7 +17,8 @@ hr{
   background: 0 0;
 }
 .cm-body-BackCol{
-  background-color: #f3f6fd !important;
+  background-color: #f3f6fd ;
+  padding: 8px ;
 }
 .wid-95{
   width: 95%;
@@ -210,26 +214,20 @@ hr{
 
 /* 设置滚动条宽度 */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
 }
-
-/* 设置滚动条轨道背景（透明或你喜欢的颜色） */
+/* 滚动条轨道 */
 ::-webkit-scrollbar-track {
-  background-color: #eeeeee;
   border-radius: 4px;
-}
-::-webkit-scrollbar {
-  width: 7px !important;
 }
 /* 设置滚动条滑块为渐变色 */
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
   background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
 }
-
 /* 鼠标悬停时滑块样式 */
 ::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
   background-image: linear-gradient(120deg, #91bdfd 0%, #b1dffd 100%);
 }
 

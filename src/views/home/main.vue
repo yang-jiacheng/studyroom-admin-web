@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="dashboard-container">
-    <el-row :gutter="20">
+    <el-row :gutter="10">
       <el-col :sm="12" :lg="6" v-for="card in topCards" :key="card.title" class="card-col">
         <el-card class="main-card" shadow="hover">
           <div class="card-content">
@@ -237,7 +237,7 @@ onBeforeUnmount(() => {
       </el-col>
     </el-row>
 
-    <el-row class="mt-20" :gutter="20">
+    <el-row class="mt-10" :gutter="10">
       <el-col :lg="12" :md="24">
         <el-card class="chart-card" shadow="hover">
           <template #header>
@@ -256,7 +256,7 @@ onBeforeUnmount(() => {
       </el-col>
     </el-row>
 
-    <el-row class="mt-20" :gutter="20">
+    <el-row class="mt-10" :gutter="10">
       <el-col :lg="12" :md="24">
         <el-card class="bottom-card" shadow="hover">
           <template #header>
@@ -309,11 +309,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.dashboard-container{
-  padding-top: 10px;
-}
-.mt-20 {
-  margin-top: 20px;
+.mt-10 {
+  margin-top: 10px;
 }
 
 /* 适配 el-row 在某些情况下的负边距 */

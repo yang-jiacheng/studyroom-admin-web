@@ -158,9 +158,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.el-dropdown-link:focus {
-  outline: none !important;
-}
+
 .el-menu-item{
   height: 50px !important;
   font-size: 14px !important;
@@ -182,13 +180,17 @@ onMounted(async () => {
   border-bottom-color: #409EFF !important;
 }
 
-/* 整体布局容器样式 */
+/* ---整体布局容器样式--- */
 .layout-container {
   height: 100vh; /* 使布局容器高度占满整个视口 */
   background-color: #f0f2f5; /* 设置主背景色，通常用于页面背景 */
 }
+/* 移除下拉菜单焦点外边框 */
+.el-dropdown-link:focus {
+  outline: none !important;
+}
 
-/* 侧边栏（Sidebar）样式 */
+/* ---侧边栏（Sidebar）样式--- */
 .layout-container .sidebar {
   background-color: #304156; /* 侧边栏的深色背景 */
   color: #bfcbd9; /* 侧边栏内文字的默认颜色 */
@@ -294,7 +296,6 @@ onMounted(async () => {
 
 /* 主要内容区域样式 */
 .main-content {
-  padding: 8px; /* 内容区域的内边距 */
   height: calc(100vh - 50px); /* 计算内容区域的高度：视口总高减去 Header 高度 */
   overflow-y: auto; /* 当内容超出高度时，显示垂直滚动条 */
 }

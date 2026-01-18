@@ -1,9 +1,23 @@
 <script setup lang="ts">
 import {
-  Setting,Notebook,User,Document,Operation,
-  QuestionFilled,Connection,UploadFilled,
-  Upload,Shop,Monitor,Goods,Tickets,
-  Collection,Promotion,CircleCheck,Flag
+  CircleCheck,
+  Collection,
+  Connection,
+  Document,
+  Eleme,
+  Flag,
+  Goods,
+  Monitor,
+  Notebook,
+  Operation,
+  Promotion,
+  QuestionFilled,
+  Setting,
+  Shop,
+  Tickets,
+  Upload,
+  UploadFilled,
+  User
 } from '@element-plus/icons-vue';
 
 // 1. 用泛型声明 props 类型，name 必须传
@@ -29,7 +43,8 @@ const iconMap: Record<string, any> = {
   "Collection": Collection,
   "Promotion": Promotion,
   "CircleCheck": CircleCheck,
-  "Flag": Flag
+  "Flag": Flag,
+  "Eleme": Eleme
 };
 
 const currentIcon = computed(() => {
@@ -39,6 +54,6 @@ const currentIcon = computed(() => {
 </script>
 <template>
   <el-icon :size="props.size || 16">
-    <component :is="currentIcon" />
+    <component :is="currentIcon"/>
   </el-icon>
 </template>
