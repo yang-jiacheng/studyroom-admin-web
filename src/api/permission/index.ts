@@ -34,7 +34,7 @@ export const saveOrUpdatePermission = (data: any): Promise<R<PermissionTreeVO>> 
 /**
  * 删除菜单
  */
-export const removePermission = (id: number): Promise<R<any>> => {
+export const removePermission = (id: string): Promise<R<any>> => {
   return request({
     url: `/permissionManage/removePermission?id=${id}`,
     method: 'post'

@@ -25,18 +25,18 @@
             <span>首页</span>
           </el-menu-item>
 
-          <template v-for="(item, index) in tree" :key="index">
-            <el-menu-item v-if="!item.children || item.children.length === 0" :index="item.path" @click="handleMenuClick(item.path)">
-              <DynamicIcon v-if="item.icon" :name="item.icon" :size="iconSize" />
+          <template v-for="(item, index) in menuTree" :key="index">
+            <el-menu-item v-if="item.type === 2" :index="item.uiMeta?.path || ''" @click="handleMenuClick(item.uiMeta?.path || '')">
+              <DynamicIcon v-if="item.uiMeta?.icon" :name="item.uiMeta.icon" :size="iconSize" />
               <span>{{item.title}}</span>
             </el-menu-item>
 
-            <el-sub-menu v-else :index="item.path">
+            <el-sub-menu v-else :index="item.uiMeta?.path || ''">
               <template #title>
-                <DynamicIcon v-if="item.icon" :name="item.icon" :size="iconSize" />
+                <DynamicIcon v-if="item.uiMeta?.icon" :name="item.uiMeta.icon" :size="iconSize" />
                 <span>{{item.title}}</span>
               </template>
-              <el-menu-item v-for="(child, index2) in item.children" :key="index2" :index="child.path" @click="handleMenuClick(child.path)">
+              <el-menu-item v-for="(child, index2) in item.children" :key="index2" :index="child.uiMeta?.path || ''" @click="handleMenuClick(child.uiMeta?.path || '')">
                 <span>{{child.title}}</span>
               </el-menu-item>
             </el-sub-menu>
@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { usePermissionStore } from "@/store/permission.ts";
+import type { PermissionTreeVO } from "@/api/permission/type.ts";
 import { useMineInfoStore } from "@/store/mineInfo.ts";
 import { removeToken } from '@/utils/auth.ts';
 import { logout } from "@/api/auth/index.ts";
@@ -102,6 +103,18 @@ const breadcrumbList = computed(() => {
 //菜单
 const permissionStore = usePermissionStore();
 const { tree } = storeToRefs(permissionStore);
+const filterMenuTree = (list: PermissionTreeVO[]): PermissionTreeVO[] => {
+  const result: PermissionTreeVO[] = [];
+  list.forEach(item => {
+    if (item.type === 1 || item.type === 2) {
+      const newItem = { ...item };
+      newItem.children = item.children ? filterMenuTree(item.children) : [];
+      result.push(newItem);
+    }
+  });
+  return result;
+};
+const menuTree = computed(() => filterMenuTree(tree.value || []));
 //用户信息
 const mineInfoStore = useMineInfoStore();
 const { mine } = storeToRefs(mineInfoStore);

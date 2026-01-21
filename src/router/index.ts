@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory,type RouteRecordRaw }  from 'vue-router';
+import { createRouter, createWebHashHistory, type RouteRecordRaw, RouterView } from 'vue-router';
 import { constantRoute } from '@/router/routes.ts';
 import { usePermissionStore } from '@/store/permission.ts';
 import { getAccessToken } from '@/utils/auth.ts';
@@ -23,24 +23,59 @@ const views = import.meta.glob('@/views/**/*.vue');
 function transformRoutes (backendRoutes: PermissionTreeVO[]): RouteRecordRaw[] {
   const res: RouteRecordRaw[] = [];
   backendRoutes.forEach((route) => {
-    const normalizedPath  =  route.component;
+    if (route.type === 3) {
+      return;
+    }
+    // 获取当前路由的元数据（例如路径、名称、图标等）
+    const uiMeta = route.uiMeta;
+    // 如果有子路由，则递归转换子路由
+    const children = route.children && route.children.length
+      ? transformRoutes(route.children)
+      : [];
+    // 如果没有路径或名称，跳过该路由
+    if (!uiMeta?.path || !uiMeta?.name) {
+      return;
+    }
+    // 如果是目录类型的路由
+    if (route.type === 1) {
+      const r: RouteRecordRaw = {
+        path: uiMeta.path,
+        name: uiMeta.name,
+        component: RouterView,
+        meta: {
+          title: route.title,
+          icon: uiMeta.icon,
+          permissionStr: route.permissionStr,
+          type: route.type
+        },
+        children
+      };
+      res.push(r);
+      return;
+    }
+    const normalizedPath = uiMeta.component;
+    if (!normalizedPath) {
+      return;
+    }
     // 匹配预加载的组件
-    const componentPath = Object.keys(views).find(key  =>
+    const componentPath = Object.keys(views).find(key =>
       key.includes(`${normalizedPath}.vue`)
-    ) || '';
+    );
+    if (!componentPath) {
+      return;
+    }
     const r: RouteRecordRaw = {
-      path: route.path,
-      name: route.name,
+      path: uiMeta.path,
+      name: uiMeta.name,
       component: views[componentPath],
       meta: {
-        title: route.title
+        title: route.title,
+        icon: uiMeta.icon,
+        permissionStr: route.permissionStr,
+        type: route.type
       },
-      children: []
+      children
     };
-    // 若有 children，则继续递归
-    if (route.children && route.children.length) {
-      r.children = transformRoutes(route.children);
-    }
     res.push(r);
   });
   return res;
@@ -63,7 +98,7 @@ router.beforeEach(async (to, from, next) => {
     // 如果尚未添加动态路由，则获取后端菜单并动态添加
     try {
       //获取后端路由
-      showLoading("正在加载系统资源...",10000);
+      showLoading("正在加载系统资源...", 10000);
       const backendRoutes = await getMinePermissionTree();
       const r = backendRoutes.result ? backendRoutes.result : [];
       const newRoutes = transformRoutes(r);
@@ -88,7 +123,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   // 未登录，或 token 不存在
-  if (!token && to.path  !== '/login') {
+  if (!token && to.path !== '/login') {
     next('/login');
     return;
   }
