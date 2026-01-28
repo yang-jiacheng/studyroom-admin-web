@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
-import type { PermissionTreeVO } from "@/api/permission/type.ts";
+import { PermissionType, type PermissionTreeVO } from "@/api/permission/type.ts";
 
 export const usePermissionStore = defineStore('permission', {
   state: () => ({
@@ -35,7 +35,7 @@ const collectButtonPermissions = (list: PermissionTreeVO[]) => {
   // 定义一个递归函数，遍历权限树节点
   const walk = (nodes: PermissionTreeVO[]) => {
     nodes.forEach((node) => {
-      if (node.type === 3 && node.permissionStr) {
+      if (node.type === PermissionType.Button && node.permissionStr) {
         permissions.add(node.permissionStr);
       }
       // 如果当前节点有子节点，递归处理子节点

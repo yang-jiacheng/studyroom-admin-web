@@ -175,7 +175,7 @@ onMounted(async () => {
           <el-table-column label="修改时间" prop="updateTime"   />
           <el-table-column  label="操作" width="120">
             <template #default="scope">
-              <span class="operation-a blue-color" @click="handleUpdate(scope.row)">修改</span>
+              <span v-permission="'versionManage:save'" class="operation-a blue-color" @click="handleUpdate(scope.row)">修改</span>
             </template>
           </el-table-column>
 

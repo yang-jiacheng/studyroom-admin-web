@@ -26,7 +26,7 @@
           </el-menu-item>
 
           <template v-for="(item, index) in menuTree" :key="index">
-            <el-menu-item v-if="item.type === 2" :index="item.uiMeta?.path || ''" @click="handleMenuClick(item.uiMeta?.path || '')">
+            <el-menu-item v-if="item.type === PermissionType.Menu" :index="item.uiMeta?.path || ''" @click="handleMenuClick(item.uiMeta?.path || '')">
               <DynamicIcon v-if="item.uiMeta?.icon" :name="item.uiMeta.icon" :size="iconSize" />
               <span>{{item.title}}</span>
             </el-menu-item>
@@ -88,7 +88,7 @@
 
 <script setup lang="ts">
 import { usePermissionStore } from "@/store/permission.ts";
-import type { PermissionTreeVO } from "@/api/permission/type.ts";
+import { PermissionType, type PermissionTreeVO } from "@/api/permission/type.ts";
 import { useMineInfoStore } from "@/store/mineInfo.ts";
 import { removeToken } from '@/utils/auth.ts';
 import { logout } from "@/api/auth/index.ts";
@@ -106,7 +106,7 @@ const { tree } = storeToRefs(permissionStore);
 const filterMenuTree = (list: PermissionTreeVO[]): PermissionTreeVO[] => {
   const result: PermissionTreeVO[] = [];
   list.forEach(item => {
-    if (item.type === 1 || item.type === 2) {
+    if (item.type === PermissionType.Directory || item.type === PermissionType.Menu) {
       const newItem = { ...item };
       newItem.children = item.children ? filterMenuTree(item.children) : [];
       result.push(newItem);

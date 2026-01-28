@@ -1,10 +1,16 @@
+export enum PermissionType {
+  Directory = 1,
+  Menu = 2,
+  Button = 3
+}
+
 export interface PermissionTreeVO {
   /** 节点ID */
   id: string;
   /** 父节点ID */
   parentId?: string;
   /** 权限类型：1目录 2菜单 3按钮 */
-  type: number;
+  type: PermissionType;
   /** 权限显示名称 */
   title: string;
   /** 权限标识字符串 */

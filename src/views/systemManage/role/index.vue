@@ -60,7 +60,7 @@ const toggleExpand = () => {
   toggle(treeList.value);
 };
 
-//获取菜单列表
+//获取权限列表
 const getTree = async () => {
   const { result } = await getPermissionTree();
   if (result) {
@@ -93,11 +93,11 @@ function cancelDialog () {
   Object.assign(formEditRole.value, formEditRoleDefault);
   dialog.visible = false;
 }
-/** 所有菜单节点数据 */
+/** 所有权限节点数据 */
 const getMenuAllCheckedKeys = (): any => {
-  // 目前被选中的菜单节点
+  // 目前被选中的权限节点
   const checkedKeys = menuRef.value?.getCheckedKeys();
-  // 半选中的菜单节点
+  // 半选中的权限节点
   const halfCheckedKeys = menuRef.value?.getHalfCheckedKeys();
   if (halfCheckedKeys) {
     checkedKeys?.unshift.apply(checkedKeys, halfCheckedKeys);
@@ -290,7 +290,7 @@ onMounted(() => {
     />
   </el-card>
 
-  <!-- 编辑菜单的弹窗 -->
+  <!-- 编辑弹窗 -->
   <el-dialog :close-on-click-modal="false"  :destroy-on-close="true"   v-model="dialog.visible" :before-close="cancelDialog"  width="550px">
     <template #header>
       <span style="font-size: 15px">{{dialog.title}}</span>
@@ -298,11 +298,11 @@ onMounted(() => {
     <div style="margin: 20px 0;">
       <el-form  :inline="false" :rules="rulesEditRole" :model="formEditRole" ref="formEditRoleRef" label-width="80px">
 
-        <el-form-item label="菜单名称" prop="name">
+        <el-form-item label="角色名称" prop="name">
           <el-input  placeholder="请输入" clearable  v-model="formEditRole.name"  />
         </el-form-item>
 
-        <el-form-item label="菜单权限">
+        <el-form-item label="拥有权限">
           <el-button class="mt-5" type="info" size="small"  plain @click="toggleExpand" >
             <el-icon ><i-ep-sort /></el-icon>
             <span>展开/折叠</span>

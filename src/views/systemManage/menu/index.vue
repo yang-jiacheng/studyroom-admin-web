@@ -4,7 +4,7 @@ import {
   removePermission,
   saveOrUpdatePermission
 } from '@/api/permission/index.ts';
-import type { PermissionTreeVO } from "@/api/permission/type.ts";
+import { PermissionType, type PermissionTreeVO } from "@/api/permission/type.ts";
 import DynamicIcon from "@/components/icon/DynamicIcon.vue";
 import type { TreeNode } from "@/api/common/tree/tree.ts";
 
@@ -28,7 +28,7 @@ const menuTableRef = ref<ElTableInstance>();
 const menuList = ref<PermissionTreeVO[]>([]);
 //加载状态
 const loading = ref(false);
-//获取菜单列表
+//获取权限列表
 const getMenuList = async () => {
   loading.value = true;
   const { result } = await getPermissionTree();
@@ -77,7 +77,7 @@ function transformToTreeSelectData (list: PermissionTreeVO[]): TreeNode[] {
   }));
 }
 
-//监菜单数据 生成treesel数据
+//监权限数据 生成treesel数据
 watch(() => menuList, (newVal) => {
   treeSelectOptions.value = transformToTreeSelectData(newVal.value);
 }, { deep: true });
@@ -87,7 +87,7 @@ const defaultMenuForm = {
   id: null as string | null,
   parentId: null as string | null,
   title: '',
-  type: 2,
+  type: '' as PermissionType | '',
   sort: 0,
   permissionStr: null as string | null,
   uiMeta: {
@@ -100,9 +100,9 @@ const defaultMenuForm = {
 const menuForm = ref({ ...defaultMenuForm });
 const formRef = ref<ElFormInstance>();
 const typeOptions = [
-  { label: '目录', value: 1 },
-  { label: '菜单', value: 2 },
-  { label: '按钮', value: 3 }
+  { label: '目录', value: PermissionType.Directory },
+  { label: '菜单', value: PermissionType.Menu },
+  { label: '按钮', value: PermissionType.Button }
 ];
 const getTypeLabel = (type: number) => {
   const option = typeOptions.find(item => item.value === type);
@@ -110,7 +110,7 @@ const getTypeLabel = (type: number) => {
 };
 //弹窗的表单验证规则
 const validateUiMetaName = (_rule: any, value: string, callback: any) => {
-  if (menuForm.value.type === 3) {
+  if (menuForm.value.type === PermissionType.Button) {
     callback();
     return;
   }
@@ -121,7 +121,7 @@ const validateUiMetaName = (_rule: any, value: string, callback: any) => {
   callback();
 };
 const validateUiMetaPath = (_rule: any, value: string, callback: any) => {
-  if (menuForm.value.type === 3) {
+  if (menuForm.value.type === PermissionType.Button) {
     callback();
     return;
   }
@@ -132,7 +132,7 @@ const validateUiMetaPath = (_rule: any, value: string, callback: any) => {
   callback();
 };
 const validateUiMetaComponent = (_rule: any, value: string | null, callback: any) => {
-  if (menuForm.value.type !== 2) {
+  if (menuForm.value.type !== PermissionType.Menu) {
     callback();
     return;
   }
@@ -143,7 +143,7 @@ const validateUiMetaComponent = (_rule: any, value: string | null, callback: any
   callback();
 };
 const validatePermissionStr = (_rule: any, value: string | null, callback: any) => {
-  if (menuForm.value.type !== 3) {
+  if (menuForm.value.type !== PermissionType.Button) {
     callback();
     return;
   }
@@ -155,7 +155,7 @@ const validatePermissionStr = (_rule: any, value: string | null, callback: any) 
 };
 const rulesMenu = {
   title: [
-    { required: true, message: '请输入菜单名称', trigger: 'blur' }
+    { required: true, message: '请输入权限名称', trigger: 'blur' }
   ],
   type: [
     { required: true, message: '请选择权限类型', trigger: 'change' }
@@ -199,7 +199,7 @@ const updateMenu = (row: PermissionTreeVO) => {
     }
   };
   dialog.visible = true;
-  dialog.title = '修改菜单';
+  dialog.title = '修改权限';
 };
 const insertMenu = (row: PermissionTreeVO | null) => {
   Object.assign(menuForm.value, defaultMenuForm);
@@ -207,7 +207,7 @@ const insertMenu = (row: PermissionTreeVO | null) => {
     menuForm.value.parentId = row.id;
   }
   dialog.visible = true;
-  dialog.title = '添加菜单';
+  dialog.title = '添加权限';
 };
 const removeMenu = (id: string) => {
   const res = removePermission(id);
@@ -239,7 +239,7 @@ const saveMenuList = async () => {
   const payload = {
     ...menuForm.value,
     // 如果是按钮权限类型，设置 uiMeta 为 null
-    uiMeta: menuForm.value.type === 3
+    uiMeta: menuForm.value.type === PermissionType.Button
       ? null
       : {
         ...menuForm.value.uiMeta,
@@ -289,7 +289,7 @@ onMounted(() => {
     <div class="mb-10" v-show="showSearch">
       <el-card shadow="hover">
         <el-form ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
-          <el-form-item label="菜单名称" prop="name">
+          <el-form-item label="权限名称" prop="name">
             <el-input v-model="queryParams.name" placeholder="请输入" clearable
                       @keyup.enter="handleQuery" />
           </el-form-item>
@@ -360,7 +360,7 @@ onMounted(() => {
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <span class="operation-a blue-color" @click="updateMenu(scope.row)">修改</span>
-            <span class="operation-a blue-color" @click="insertMenu(scope.row)">新增</span>
+            <span v-if="scope.row.type !== PermissionType.Button" class="operation-a blue-color" @click="insertMenu(scope.row)">新增</span>
             <span class="operation-a red-color" @click="deleteMenu(scope.row)">删除</span>
           </template>
         </el-table-column>
@@ -368,7 +368,7 @@ onMounted(() => {
     </el-card>
   </div>
 
-  <!-- 编辑菜单的弹窗 -->
+  <!-- 编辑权限的弹窗 -->
   <el-dialog :close-on-click-modal="false" :destroy-on-close="true" v-model="dialog.visible"
              :before-close="cancelDialog" width="750px">
     <template #header>
@@ -377,142 +377,113 @@ onMounted(() => {
     <div style="margin: 20px 0;">
       <el-form :inline="false" :rules="rulesMenu" :model="menuForm" ref="formRef" label-width="80px"
                label-position="top">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="上级菜单" prop="parentId">
-              <el-tree-select
-                v-model="menuForm.parentId"
-                :data="treeSelectOptions"
-                check-strictly
-                :render-after-expand="true"
-                clearable
-                placeholder="请选择"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="菜单名称" prop="title">
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.title" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="权限类型" prop="type">
-              <el-select v-model="menuForm.type" placeholder="请选择" >
-                <el-option v-for="item in typeOptions" :key="item.value" :label="item.label"
-                           :value="item.value"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col v-if="menuForm.type !== 3" :span="12">
-            <el-form-item prop="uiMeta.name" label-width="100px">
-              <template #label>
-                <span>
-                  <el-tooltip
-                    effect="dark"
-                    content="路由的name字段"
-                    placement="top"
-                  >
-                    <el-icon :size="12"><i-ep-question-filled/></el-icon>
-                  </el-tooltip>
-                  路由名称
-                </span>
-              </template>
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.uiMeta.name" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col v-if="menuForm.type !== 3" :span="12">
-            <el-form-item prop="uiMeta.path" label-width="100px">
-              <template #label>
-                <span>
-                  <el-tooltip
-                    effect="dark"
-                    content="路由的path字段,例如`/systemManage/user`"
-                    placement="top"
-                  >
-                    <el-icon :size="12"><i-ep-question-filled/></el-icon>
-                  </el-tooltip>
-                  路由路径
-                </span>
-              </template>
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.uiMeta.path" />
-            </el-form-item>
-          </el-col>
-
-          <el-col v-if="menuForm.type === 2" :span="12">
-            <el-form-item prop="uiMeta.component" label-width="100px">
-              <template #label>
-                <span>
-                  <el-tooltip
-                    effect="dark"
-                    content="路由的component字段,去掉 末尾的.vue,例如`/systemManage/user/index`"
-                    placement="top"
-                  >
-                    <el-icon :size="12"><i-ep-question-filled/></el-icon>
-                  </el-tooltip>
-                  路由组件
-                </span>
-              </template>
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.uiMeta.component" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item prop="permissionStr" label-width="100px">
-              <template #label>
-                <span>
-                  <el-tooltip
-                    effect="dark"
-                    content="控制器中的权限标识,例如`system:manage`"
-                    placement="top"
-                  >
-                    <el-icon :size="12"><i-ep-question-filled/></el-icon>
-                  </el-tooltip>
-                  权限标识
-                </span>
-              </template>
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.permissionStr" />
-            </el-form-item>
-          </el-col>
-
-          <el-col v-if="menuForm.type !== 3" :span="12">
-            <el-form-item prop="uiMeta.icon" label-width="100px">
-              <template #label>
-                <span>
-                  <el-tooltip
-                    effect="dark"
-                    content="element-plus的图标名,例如`Setting`"
-                    placement="top"
-                  >
-                    <el-icon :size="12"><i-ep-question-filled/></el-icon>
-                  </el-tooltip>
-                  图标
-                </span>
-              </template>
-              <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
-                        v-model="menuForm.uiMeta.icon" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-          <el-col :span="12">
-            <el-form-item label="显示排序" prop="sort">
-              <el-input-number v-model="menuForm.sort" controls-position="right" :min="0"/>
-            </el-form-item>
-          </el-col>
-
+        <div class="menu-form-wrapper">
+          <div class="menu-form-grid">
+          <el-form-item label="上级权限" prop="parentId">
+            <el-tree-select
+              v-model="menuForm.parentId"
+              :data="treeSelectOptions"
+              check-strictly
+              :render-after-expand="true"
+              clearable
+              placeholder="请选择"
+            />
+          </el-form-item>
+          <el-form-item label="权限名称" prop="title">
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.title" />
+          </el-form-item>
+          <el-form-item label="权限类型" prop="type">
+            <el-select v-model="menuForm.type" placeholder="请选择" >
+              <el-option v-for="item in typeOptions" :key="item.value" :label="item.label"
+                         :value="item.value"/>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="menuForm.type !== PermissionType.Button" prop="uiMeta.name" label-width="100px">
+            <template #label>
+              <span>
+                <el-tooltip
+                  effect="dark"
+                  content="路由的name字段"
+                  placement="top"
+                >
+                  <el-icon :size="12"><i-ep-question-filled/></el-icon>
+                </el-tooltip>
+                路由名称
+              </span>
+            </template>
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.uiMeta.name" />
+          </el-form-item>
+          <el-form-item v-if="menuForm.type !== PermissionType.Button" prop="uiMeta.path" label-width="100px">
+            <template #label>
+              <span>
+                <el-tooltip
+                  effect="dark"
+                  content="路由的path字段,例如`/systemManage/user`"
+                  placement="top"
+                >
+                  <el-icon :size="12"><i-ep-question-filled/></el-icon>
+                </el-tooltip>
+                路由路径
+              </span>
+            </template>
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.uiMeta.path" />
+          </el-form-item>
+          <el-form-item v-if="menuForm.type === PermissionType.Menu" prop="uiMeta.component" label-width="100px">
+            <template #label>
+              <span>
+                <el-tooltip
+                  effect="dark"
+                  content="路由的component字段,去掉 末尾的.vue,例如`/systemManage/user/index`"
+                  placement="top"
+                >
+                  <el-icon :size="12"><i-ep-question-filled/></el-icon>
+                </el-tooltip>
+                路由组件
+              </span>
+            </template>
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.uiMeta.component" />
+          </el-form-item>
+          <el-form-item prop="permissionStr" label-width="100px">
+            <template #label>
+              <span>
+                <el-tooltip
+                  effect="dark"
+                  content="控制器中的权限标识,例如`system:manage`"
+                  placement="top"
+                >
+                  <el-icon :size="12"><i-ep-question-filled/></el-icon>
+                </el-tooltip>
+                权限标识
+              </span>
+            </template>
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.permissionStr" />
+          </el-form-item>
+          <el-form-item v-if="menuForm.type !== PermissionType.Button" prop="uiMeta.icon" label-width="100px">
+            <template #label>
+              <span>
+                <el-tooltip
+                  effect="dark"
+                  content="element-plus的图标名,例如`Setting`"
+                  placement="top"
+                >
+                  <el-icon :size="12"><i-ep-question-filled/></el-icon>
+                </el-tooltip>
+                图标
+              </span>
+            </template>
+            <el-input placeholder="请输入" clearable @keyup.enter="handleQuery"
+                      v-model="menuForm.uiMeta.icon" />
+          </el-form-item>
+          <el-form-item label="显示排序" prop="sort">
+            <el-input-number v-model="menuForm.sort" controls-position="right" :min="0"/>
+          </el-form-item>
+          </div>
+        </div>
       </el-form>
     </div>
     <template #footer>
@@ -525,11 +496,22 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.el-col{
+.menu-form-wrapper{
   display: flex;
   justify-content: center;
 }
-.el-select,.el-input-number,.el-input{
-  width: 260px;
+.menu-form-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px 24px;
+  width: 90%;
+}
+.menu-form-grid :deep(.el-form-item){
+  margin-bottom: 0;
+}
+.menu-form-grid .el-select,
+.menu-form-grid .el-input-number,
+.menu-form-grid .el-input{
+  width: 100%;
 }
 </style>

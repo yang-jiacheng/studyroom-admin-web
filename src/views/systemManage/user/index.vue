@@ -187,9 +187,6 @@ const rulesEditRole = {
   name: [
     { required: true, message: '请输入昵称', trigger: 'blur' }
   ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' }
-  ],
   phone: [
     {
       validator: (rule: any, value: string, callback: (error?: Error) => void) => {

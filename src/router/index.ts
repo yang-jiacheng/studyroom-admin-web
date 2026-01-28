@@ -3,7 +3,7 @@ import { constantRoute } from '@/router/routes.ts';
 import { usePermissionStore } from '@/store/permission.ts';
 import { getAccessToken } from '@/utils/auth.ts';
 import { getMinePermissionTree } from "@/api/permission";
-import type { PermissionTreeVO } from "@/api/permission/type.ts";
+import { PermissionType, type PermissionTreeVO } from "@/api/permission/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
 
 /**
@@ -23,7 +23,7 @@ const views = import.meta.glob('@/views/**/*.vue');
 function transformRoutes (backendRoutes: PermissionTreeVO[]): RouteRecordRaw[] {
   const res: RouteRecordRaw[] = [];
   backendRoutes.forEach((route) => {
-    if (route.type === 3) {
+    if (route.type === PermissionType.Button) {
       return;
     }
     // 获取当前路由的元数据（例如路径、名称、图标等）
@@ -37,7 +37,7 @@ function transformRoutes (backendRoutes: PermissionTreeVO[]): RouteRecordRaw[] {
       return;
     }
     // 如果是目录类型的路由
-    if (route.type === 1) {
+    if (route.type === PermissionType.Directory) {
       const r: RouteRecordRaw = {
         path: uiMeta.path,
         name: uiMeta.name,

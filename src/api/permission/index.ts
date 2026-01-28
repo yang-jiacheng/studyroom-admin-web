@@ -4,7 +4,7 @@ import type { PermissionTreeVO, Role, RoleDetail } from "@/api/permission/type.t
 import type { PageResult } from "@/api/common/page/PageResult.ts";
 
 /**
- * 获取菜单
+ * 获取权限
  */
 export const getPermissionTree = (): Promise<R<PermissionTreeVO[]>> => {
   return request({
@@ -21,7 +21,7 @@ export const getMinePermissionTree = (): Promise<R<PermissionTreeVO[]>> => {
 };
 
 /**
- * 编辑菜单
+ * 编辑权限
  */
 export const saveOrUpdatePermission = (data: any): Promise<R<PermissionTreeVO>> => {
   return request({
@@ -32,7 +32,7 @@ export const saveOrUpdatePermission = (data: any): Promise<R<PermissionTreeVO>> 
 };
 
 /**
- * 删除菜单
+ * 删除权限
  */
 export const removePermission = (id: string): Promise<R<any>> => {
   return request({

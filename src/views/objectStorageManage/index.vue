@@ -147,7 +147,7 @@ onMounted(async () => {
                       @keyup.enter="handleQuery" class="wid-200"/>
           </el-form-item>
 
-          <el-form-item>
+          <el-form-item v-permission="'objectStorageManage:list'">
             <el-button type="primary" @click="handleQuery">
               <el-icon>
                 <i-ep-search/>
@@ -169,7 +169,7 @@ onMounted(async () => {
     <el-card shadow="hover">
       <template #header>
         <el-row :gutter="10" style="display: flex; justify-content: space-between;">
-          <div>
+          <div v-permission="'objectStorageManage:save'">
             <el-button type="primary" plain @click="showExportDialog">
               <el-icon>
                 <i-ep-plus/>
@@ -200,7 +200,7 @@ onMounted(async () => {
         <el-table-column label="创建人" prop="creatorName"/>
         <el-table-column label="操作" width="120">
           <template #default="scope">
-            <span class="operation-a red-color"
+            <span v-permission="'objectStorageManage:delete'" class="operation-a red-color"
                   @click="deleteObjectStorageItem(scope.row)">删除</span>
           </template>
         </el-table-column>
