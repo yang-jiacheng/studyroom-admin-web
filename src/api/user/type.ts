@@ -17,7 +17,7 @@ export interface User {
 
   updateTime: string; // 修改时间
 
-  registType: number; // 注册类型：1=用户注册，2=后台添加
+  registerType: number; // 注册类型：1=用户注册，2=后台添加
 
   address: string; // 常驻地址
 }

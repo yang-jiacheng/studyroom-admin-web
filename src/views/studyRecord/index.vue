@@ -3,6 +3,7 @@ import { getStudyRecord,getAllLibrary } from '@/api/studyRecord/index.ts';
 import type { StudyRecord } from "@/api/studyRecord/type.ts";
 import type { SelResult } from "@/api/common/page/CollResult.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { StudyRecordEnum } from "@/enums/permission/studyRecord.ts";
 
 /**
  * 查询表单
@@ -99,7 +100,7 @@ onMounted(async () => {
   <div>
     <div class="mb-10" >
       <el-card shadow="hover">
-        <el-form ref="queryFormRef" :model="queryParams" :inline="true" >
+        <el-form v-permission="StudyRecordEnum.List" ref="queryFormRef" :model="queryParams" :inline="true" >
           <el-form-item label="手机号" prop="phone">
             <el-input v-model="queryParams.phone" placeholder="请输入" clearable @keyup.enter="handleQuery" class="wid-200" />
           </el-form-item>
@@ -184,7 +185,7 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column  label="操作" width="120">
           <template #default="scope">
-            <span class="operation-a blue-color" @click="userDetail(scope.row)">详情</span>
+            <span v-permission="StudyRecordEnum.List" class="operation-a blue-color" @click="userDetail(scope.row)">详情</span>
           </template>
         </el-table-column>
       </el-table>

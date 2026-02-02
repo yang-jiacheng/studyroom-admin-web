@@ -2,6 +2,7 @@
 import type { BusinessConfig } from "@/api/businessConfig/type.ts";
 import { getBusinessList,updateBusiness } from "@/api/businessConfig";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { BusinessConfigManageEnum } from "@/enums/permission/businessConfigManage.ts";
 
 const list = ref<BusinessConfig[]>([]);
 const getList = async () => {
@@ -48,7 +49,7 @@ onMounted( async () => {
           </el-table-column>
           <el-table-column  label="操作" width="120"  align="center" >
             <template #default="scope">
-              <span class="operation-a blue-color" @click="updateBus(scope.row)">修改</span>
+              <span v-permission="BusinessConfigManageEnum.Update" class="operation-a blue-color" @click="updateBus(scope.row)">修改</span>
             </template>
           </el-table-column>
         </el-table>

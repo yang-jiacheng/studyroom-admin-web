@@ -6,6 +6,7 @@ import { encryptSha256 } from "@/utils/encrypt.ts";
 import { updateProgress } from "@/utils/progressOverlay.ts";
 import { globalHeaders } from "@/utils/request.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { UserManageEnum } from "@/enums/permission/userManage.ts";
 
 /**
  * 查询表单
@@ -299,7 +300,7 @@ onMounted(() => {
 <div>
   <div class="mb-10" >
     <el-card shadow="hover">
-      <el-form ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
+      <el-form v-permission="UserManageEnum.List" ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
         <el-form-item label="昵称" prop="name">
           <el-input v-model="queryParams.name" placeholder="请输入" clearable @keyup.enter="handleQuery" class="wid-200" />
         </el-form-item>
@@ -341,21 +342,21 @@ onMounted(() => {
     <template #header>
       <el-row :gutter="10" style="display: flex; justify-content: space-between;">
         <div>
-          <el-button type="danger" plain @click="deleteUserBatch">
+          <el-button v-permission="UserManageEnum.DeleteBatch" type="danger" plain @click="deleteUserBatch">
             <el-icon ><i-ep-delete /></el-icon>
             <span>批量删除</span>
           </el-button>
-          <el-button type="primary" plain @click="addUser">
+          <el-button v-permission="UserManageEnum.Save" type="primary" plain @click="addUser">
             <el-icon ><i-ep-plus /></el-icon>
             <span>新增</span>
           </el-button>
         </div>
         <div>
-          <el-button type="primary" plain @click="importUser">
+          <el-button v-permission="UserManageEnum.Import" type="primary" plain @click="importUser">
             <el-icon ><i-ep-upload /></el-icon>
             <span>导入</span>
           </el-button>
-          <el-button type="primary" plain @click="exportUser">
+          <el-button v-permission="UserManageEnum.Export" type="primary" plain @click="exportUser">
             <el-icon ><i-ep-download /></el-icon>
             <span>导出</span>
           </el-button>
@@ -376,17 +377,17 @@ onMounted(() => {
       <el-table-column label="手机号"  prop="phone" />
       <el-table-column label="性别"  prop="gender" />
       <el-table-column label="注册时间" prop="createTime" />
-      <el-table-column label="注册类型"  prop="registType" >
+      <el-table-column label="注册类型"  prop="registerType" >
         <template #default="scope">
-          <span v-if="scope.row.registType === 1">用户注册</span>
-          <span v-else-if="scope.row.registType === 2">后台添加</span>
+          <span v-if="scope.row.registerType === '1'">用户注册</span>
+          <span v-else-if="scope.row.registerType === '2'">后台添加</span>
         </template>
       </el-table-column>
       <el-table-column label="地址"  prop="address" />
       <el-table-column  label="操作" width="200">
         <template #default="scope">
-          <span class="operation-a blue-color" @click="updateUser(scope.row)">修改</span>
-          <span class="operation-a red-color" @click="deleteUser(scope.row)">删除</span>
+          <span v-permission="UserManageEnum.Save" class="operation-a blue-color" @click="updateUser(scope.row)">修改</span>
+          <span v-permission="UserManageEnum.DeleteBatch" class="operation-a red-color" @click="deleteUser(scope.row)">删除</span>
         </template>
       </el-table-column>
     </el-table>

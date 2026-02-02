@@ -2,6 +2,7 @@
 import { getFeedBackPageList,removeFeedBackById,replyFeedBackById } from "@/api/feedback";
 import type { Feedback } from "@/api/feedback/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { FeedBackManageEnum } from "@/enums/permission/feedBackManage.ts";
 
 /**
  * 查询表单
@@ -149,7 +150,7 @@ onMounted(async () => {
   <div>
     <div class="mb-10" >
       <el-card shadow="hover">
-        <el-form ref="queryFormRef"  :model="queryParams" :inline="true" >
+        <el-form v-permission="FeedBackManageEnum.List" ref="queryFormRef"  :model="queryParams" :inline="true" >
           <el-form-item label="手机号" prop="phone">
             <el-input v-model="queryParams.phone" placeholder="请输入" clearable @keyup.enter="handleQuery" class="wid-200" />
           </el-form-item>
@@ -211,8 +212,8 @@ onMounted(async () => {
         <el-table-column label="回复时间"  prop="replyTime" />
         <el-table-column  label="操作" width="120">
           <template #default="scope">
-            <span class="operation-a blue-color" @click="handleReply(scope.row)">回复</span>
-            <span class="operation-a red-color" @click="handleRemove(scope.row)">删除</span>
+            <span v-permission="FeedBackManageEnum.Reply" class="operation-a blue-color" @click="handleReply(scope.row)">回复</span>
+            <span v-permission="FeedBackManageEnum.Delete" class="operation-a red-color" @click="handleRemove(scope.row)">删除</span>
           </template>
         </el-table-column>
       </el-table>

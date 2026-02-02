@@ -2,6 +2,7 @@
 import { getAgreement,saveAgreement } from "@/api/agreement";
 import useTinymce from "@/hooks/useTinymce.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { UserAgreementManageEnum } from "@/enums/permission/userAgreementManage.ts";
 
 const tinyId = 'content';
 const {  initEditor, getContent, setContent } = useTinymce();
@@ -53,9 +54,9 @@ onMounted(async () => {
 
     <el-card class="mt-10" shadow="hover">
       <div >
-        <div :id="tinyId"></div>
+        <div v-permission="UserAgreementManageEnum.List" :id="tinyId"></div>
         <div class="mt-10">
-          <el-button class="advert-btn" type="primary" plain @click="saveData">保存</el-button>
+          <el-button v-permission="UserAgreementManageEnum.Save" class="advert-btn" type="primary" plain @click="saveData">保存</el-button>
         </div>
       </div>
     </el-card>

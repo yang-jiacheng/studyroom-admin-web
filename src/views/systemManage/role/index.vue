@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import {
+  addOrUpdateRole,
   getPermissionTree,
   getRoleById,
   getRolePageList,
-  removeRoleById,
-  addOrUpdateRole
+  removeRoleById
 } from "@/api/permission/index.ts";
 import type { PermissionTreeVO, Role } from "@/api/permission/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
+import { RoleManageEnum } from "@/enums/permission/roleManage.ts";
 
 /**
  * 查询表单
@@ -214,7 +215,7 @@ onMounted(() => {
 <div>
   <div class="mb-10" >
     <el-card shadow="hover">
-      <el-form ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
+      <el-form v-permission="RoleManageEnum.List" ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="queryParams.name" placeholder="请输入" clearable @keyup.enter="handleQuery" class="wid-200" />
         </el-form-item>
@@ -252,7 +253,7 @@ onMounted(() => {
     <template #header>
       <el-row :gutter="10">
         <el-col :span="1.5">
-          <el-button type="primary" plain @click="addRole">
+          <el-button v-permission="RoleManageEnum.Save" type="primary" plain @click="addRole">
             <el-icon ><i-ep-plus /></el-icon>
             <span>新增</span>
           </el-button>
@@ -273,8 +274,8 @@ onMounted(() => {
       <el-table-column label="创建时间" prop="createTime" width="200"/>
       <el-table-column  label="操作" width="200">
         <template #default="scope">
-          <span class="operation-a blue-color" @click="updateRole(scope.row)">修改</span>
-          <span class="operation-a red-color" @click="deleteRole(scope.row)">删除</span>
+          <span v-permission="RoleManageEnum.Save" class="operation-a blue-color" @click="updateRole(scope.row)">修改</span>
+          <span v-permission="RoleManageEnum.Delete" class="operation-a red-color" @click="deleteRole(scope.row)">删除</span>
         </template>
       </el-table-column>
     </el-table>

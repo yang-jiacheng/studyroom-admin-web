@@ -7,6 +7,7 @@ import {
 import type { ObjectStorage } from "@/api/objectStorage/type.ts";
 import { closeLoading, showLoading } from "@/utils/loading.ts";
 import { updateProgress } from "@/utils/progressOverlay.ts";
+import { ObjectStorageManageEnum } from "@/enums/permission/objectStorageManage.ts";
 
 /**
  * 查询表单
@@ -141,13 +142,13 @@ onMounted(async () => {
   <div>
     <div class="mb-10">
       <el-card shadow="hover">
-        <el-form ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px" @submit.prevent>
+        <el-form v-permission="ObjectStorageManageEnum.List" ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px" @submit.prevent>
           <el-form-item label="文件名" prop="name">
             <el-input v-model="queryParams.name" placeholder="请输入文件名" clearable
                       @keyup.enter="handleQuery" class="wid-200"/>
           </el-form-item>
 
-          <el-form-item v-permission="'objectStorageManage:list'">
+          <el-form-item >
             <el-button type="primary" @click="handleQuery">
               <el-icon>
                 <i-ep-search/>
@@ -169,8 +170,8 @@ onMounted(async () => {
     <el-card shadow="hover">
       <template #header>
         <el-row :gutter="10" style="display: flex; justify-content: space-between;">
-          <div v-permission="'objectStorageManage:save'">
-            <el-button type="primary" plain @click="showExportDialog">
+          <div >
+            <el-button v-permission="ObjectStorageManageEnum.Save" type="primary" plain @click="showExportDialog">
               <el-icon>
                 <i-ep-plus/>
               </el-icon>
@@ -200,7 +201,7 @@ onMounted(async () => {
         <el-table-column label="创建人" prop="creatorName"/>
         <el-table-column label="操作" width="120">
           <template #default="scope">
-            <span v-permission="'objectStorageManage:delete'" class="operation-a red-color"
+            <span v-permission="ObjectStorageManageEnum.Delete" class="operation-a red-color"
                   @click="deleteObjectStorageItem(scope.row)">删除</span>
           </template>
         </el-table-column>

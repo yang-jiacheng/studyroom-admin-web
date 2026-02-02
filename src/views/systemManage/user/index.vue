@@ -11,6 +11,7 @@ import type { AdminInfo, AdminInfoDetail } from "@/api/adminInfo/type.ts";
 import type { SelResult } from "@/api/common/page/CollResult.ts";
 import { showLoading,closeLoading } from "@/utils/loading.ts";
 import { encryptSha256 } from "@/utils/encrypt.ts";
+import { AdminManageEnum } from "@/enums/permission/adminManage.ts";
 
 const roleList = ref<SelResult[]>([]);
 const getRoleList = async () => {
@@ -253,7 +254,7 @@ onMounted(() => {
 
     <div class="mb-10" >
       <el-card shadow="hover">
-        <el-form ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
+        <el-form v-permission="AdminManageEnum.List" ref="queryFormRef" :model="queryParams" :inline="true" label-width="68px">
           <el-form-item label="昵称" prop="name">
             <el-input v-model="queryParams.name" placeholder="请输入" clearable @keyup.enter="handleQuery" class="wid-200" />
           </el-form-item>
@@ -277,11 +278,11 @@ onMounted(() => {
       <template #header>
         <el-row :gutter="10">
           <div>
-            <el-button type="danger" plain @click="deleteAdminBatch">
+            <el-button v-permission="AdminManageEnum.DeleteBatch" type="danger" plain @click="deleteAdminBatch">
               <el-icon ><i-ep-delete /></el-icon>
               <span>批量删除</span>
             </el-button>
-            <el-button type="primary" plain @click="addAdmin">
+            <el-button v-permission="AdminManageEnum.Save" type="primary" plain @click="addAdmin">
               <el-icon ><i-ep-plus /></el-icon>
               <span>新增</span>
             </el-button>
@@ -305,6 +306,7 @@ onMounted(() => {
         <el-table-column label="状态" >
           <template #default="scope">
             <el-switch
+              v-permission="AdminManageEnum.UpdateStatus"
               v-model="scope.row.status"
               :active-value="1"
               :inactive-value="2"
@@ -314,8 +316,8 @@ onMounted(() => {
         </el-table-column>
         <el-table-column  label="操作" width="200">
           <template #default="scope">
-            <span class="operation-a blue-color" @click="updateAdmin(scope.row)">修改</span>
-            <span class="operation-a red-color" @click="deleteAdmin(scope.row)">删除</span>
+            <span v-permission="AdminManageEnum.Save" class="operation-a blue-color" @click="updateAdmin(scope.row)">修改</span>
+            <span v-permission="AdminManageEnum.DeleteBatch" class="operation-a red-color" @click="deleteAdmin(scope.row)">删除</span>
           </template>
         </el-table-column>
       </el-table>

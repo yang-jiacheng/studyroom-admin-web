@@ -4,6 +4,7 @@ import type { Version } from "@/api/version/type.ts";
 import { getVersionList,saveVersion } from "@/api/version";
 import { closeProgress, showProgress, updateProgress } from "@/utils/progressOverlay.ts";
 import useOss from "@/hooks/useOSS.ts";
+import { VersionManageEnum } from "@/enums/permission/versionManage.ts";
 
 const loading = ref(false);
 const userTableRef = ref<ElTableInstance>();
@@ -175,7 +176,7 @@ onMounted(async () => {
           <el-table-column label="修改时间" prop="updateTime"   />
           <el-table-column  label="操作" width="120">
             <template #default="scope">
-              <span v-permission="'versionManage:save'" class="operation-a blue-color" @click="handleUpdate(scope.row)">修改</span>
+              <span v-permission="VersionManageEnum.Save" class="operation-a blue-color" @click="handleUpdate(scope.row)">修改</span>
             </template>
           </el-table-column>
 
